@@ -201,6 +201,23 @@ Before action method add
 
 - Other constraints :
 min, max, minlength, maxlength, int, float, guid.
+
+5. Passing Data to Views
+- Ways to pass data to views
+1) Passing model as argument to view method
+In controller - return View(movie);
+In view file - @using Vidly.Models
+                      @Model.Name
+2) Use ViewData dictionary :
+In controller - ViewData["Move"] = movie;
+In view file - @( (Movie)ViewData["Movie"]).Name )
+3) Use ViewBag magic property
+In controller - ViewBag.Movie = movie;
+In view file - @ViewBag.Movie
+
+- 2nd and 3rd way have problems like Magic string
+- Use only 1st way
+- View() method internally assigns ViewData.Model property to passed model.
 ----------------------------------------------
-Status - Section 2 - Attribute Routing - completed
+Status - Section 2 - Passing Data to Views - completed
 
