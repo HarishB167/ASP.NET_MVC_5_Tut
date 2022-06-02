@@ -265,6 +265,37 @@ Write code
 - Adding partial view to a view
 @Html.Partial("<PartialViewName>", [optionally model])
 Model is automatically passed to partial views
+-----------------------------------------------------------
+
+Section 3 : Working with Data
+
+1. Entity Framework
+It is an ORM (object relational mapper)
+
+- DbContext class
+Provided by Entity framework
+Gateway to database
+A DbContext has >=1 DbSet (tables)
+
+- LINQ
+Use LINQ to query DbSet
+Entity framework translates to SQL queries at runtime
+Entity framework tracks changes in DbSet : Add, Modify, Delete
+Persisting command applies those changes to database.
+
+- Workflows types
+Database first, Code first
+
+2. Database first vs Code first
+- Database first
+Generate Database tables > Entity framework generates Domain classes
+
+- Code first
+Create Domain classes > Entity framework generates database tables
+Increased productivity
+Full versioning of database
+Much easier to build an integration test db
+
 ----------------------------------------------
-Status - Section 2 - Solution - completed
+Status - Section 3 - Database first vs Code first - completed
 
