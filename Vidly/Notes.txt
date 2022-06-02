@@ -231,6 +231,25 @@ Add properties to it.
 
 - Pass instance of this ViewModel to View() method
 Change same in view's .cshtml file
+
+7. Razor views
+ASP.NET uses Razor view engine
+- if block
+@if (...)
+{
+    <div>sometext</div>
+}
+
+- for block
+@foreach (var item in list)
+{
+    <div>@item.Name</div>
+}
+
+- Comments
+@*
+Mutliline comment
+*@
 ----------------------------------------------
-Status - Section 2 - View Models - completed
+Status - Section 2 - Razor views - completed
 
