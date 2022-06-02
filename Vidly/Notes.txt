@@ -266,5 +266,5 @@ Write code
 @Html.Partial("<PartialViewName>", [optionally model])
 Model is automatically passed to partial views
 ----------------------------------------------
-Status - Section 2 - Exercise - completed
+Status - Section 2 - Solution - completed
 
