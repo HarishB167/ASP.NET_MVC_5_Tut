@@ -250,6 +250,21 @@ ASP.NET uses Razor view engine
 @*
 Mutliline comment
 *@
+
+
+8. Partial Views
+Reusable views in other views
+For breaking down large views
+
+- Creating Partial Views
+Right click Views/Shared > Add > View
+Name - _<PartialViewName>
+Tick - Create as partial view
+Write code
+
+- Adding partial view to a view
+@Html.Partial("<PartialViewName>", [optionally model])
+Model is automatically passed to partial views
 ----------------------------------------------
-Status - Section 2 - Razor views - completed
+Status - Section 2 - Partial views - completed
 
