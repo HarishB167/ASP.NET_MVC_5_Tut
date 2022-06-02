@@ -218,6 +218,19 @@ In view file - @ViewBag.Movie
 - 2nd and 3rd way have problems like Magic string
 - Use only 1st way
 - View() method internally assigns ViewData.Model property to passed model.
+
+
+6. View Models
+ViewModel is a model specifically build for a View.
+Includes data and rules specific to view.
+
+- Create View Models
+Creat new folder in project - ViewModels
+Add new class - <Action><Controller>ViewModel.cs
+Add properties to it.
+
+- Pass instance of this ViewModel to View() method
+Change same in view's .cshtml file
 ----------------------------------------------
-Status - Section 2 - Passing Data to Views - completed
+Status - Section 2 - View Models - completed
 
