@@ -172,6 +172,10 @@ In URL : /movies/edit/1
 query string : /movies/edit/?id=1
 Post data : id=1
 
+- Making parameter optional
+Making parameter nullable
+For value types append ? to type declaration : int? someVar
+
 ----------------------------------------------
-Status - Section 2 - vid 2 - completed
+Status - Section 2 - Action parameters - completed
 
