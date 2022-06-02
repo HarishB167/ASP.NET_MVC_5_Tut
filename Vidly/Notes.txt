@@ -176,6 +176,17 @@ Post data : id=1
 Making parameter nullable
 For value types append ? to type declaration : int? someVar
 
+3. Convention-based Routes
+- Creating Custom route
+In App_Start/RouteConfig.cs
+before default route add
+routes.MapRoute(name, urlPattern, defaultObject, constraintObject)
+routes.MapRoute("<Name>",
+         "movies/released/{year}/{month}",
+         new {controller = "Movies", action = "ByReleaseDate"},
+         new { year = @"\d{4}", month = @"\d{2}" });
+
+
 ----------------------------------------------
-Status - Section 2 - Action parameters - completed
+Status - Section 2 - Convention-based Routes - completed
 
