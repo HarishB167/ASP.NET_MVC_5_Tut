@@ -368,6 +368,25 @@ using System.ComponentModel.DataAnnotations;
 [Required] - not null
 [StringLength(255)] - set length of string
 Create new migration and run it.
+
+7. Querying Objects
+- Add DbContext to Controller
+In CustomersController add
+private ApplicationDbContext _context;
+
+- Initialize it in constructor
+public CustomerController()
+{ _context = new ApplicationDbContext(); }
+
+- DbContext needs to be disposed in controller's Dispose method
+protected override void Dispose(bool disposing) 
+{ _context.Dispose(); }
+
+- In actions use DbContext as
+var customers = _context.Customers; // Gets all customers
+
+- Deferred execution
+query is executed on : iteration, conversion to list.
 ----------------------------------------------
-Status - Section 3 - Overriding Conventions - completed
+Status - Section 3 - Querying Objects - completed
 
