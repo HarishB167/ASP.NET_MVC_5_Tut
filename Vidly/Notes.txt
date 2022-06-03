@@ -396,6 +396,13 @@ By default related objects are not loaded
 using System.Data.Entity;
 use include method as :
 _context.Customers.Include(c => c.MembershipType)
+
+9. Adding custom shortcut - opening Package manager console
+Tools > Options > Environment > Keyboard
+In Show commands containing:
+type packagemanagerconsole
+In Press shortcut keys : press shortcut combination.e.g. Alt+/, Alt+.
+
 ----------------------------------------------
-Status - Section 3 - Eager Loading - completed
+Status - Section 3 - Adding custom shortcut - completed
 
