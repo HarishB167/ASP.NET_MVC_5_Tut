@@ -387,6 +387,15 @@ var customers = _context.Customers; // Gets all customers
 
 - Deferred execution
 query is executed on : iteration, conversion to list.
+
+
+8. Eager Loading
+By default related objects are not loaded
+
+- In controller
+using System.Data.Entity;
+use include method as :
+_context.Customers.Include(c => c.MembershipType)
 ----------------------------------------------
-Status - Section 3 - Querying Objects - completed
+Status - Section 3 - Eager Loading - completed
 
