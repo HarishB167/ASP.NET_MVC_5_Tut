@@ -296,6 +296,41 @@ Increased productivity
 Full versioning of database
 Much easier to build an integration test db
 
+
+3. Code-first Migrations
+- Open Package manager console
+Tools > NuGet Package manager > package manager console
+
+- First time - enable migration : enable-migrations
+Migrations folder is created in project
+
+- Creating first migration
+add-migration <NameForMigration>
+
+- Inside migration file
+CreateTable method call
+Tables created for ASP.NET Identity to control Authen and Authorize:
+dbo.AspNetRoles, dbo.AspNetUserRoles, dbo.AspNetUsers, etc.
+
+- Models/IdentityModels.cs
+Classes :
+ApplicationUser,
+ApplicationDbContext derives from IdentityDbContext(part of ASP.NET identity framework)
+
+- On executing add-migration
+Entity framework looked at DbContext
+It discovers DbSets defined in IndentityDbContext
+
+- Referencing models in DbContext to create their migration
+In IdentityModel -> ApplicationDbContext add DbSet as
+public DbSet<MyModel> MyModels { get; set; }
+
+- Recreating migration
+add-migration AlreadyCreatedMigrationName  -force
+
+- Running migration
+In package manager console
+update-database
 ----------------------------------------------
-Status - Section 3 - Database first vs Code first - completed
+Status - Section 3 - Code first Migrations - completed
 
