@@ -361,6 +361,13 @@ add-migration <MigrationName>
 - In Up method in empty migration file
 Add Sql("SQL statement to execute");
 
+
+6. Overriding Conventions
+- Apply Data Annotations above property declaration in Model classes
+using System.ComponentModel.DataAnnotations;
+[Required] - not null
+[StringLength(255)] - set length of string
+Create new migration and run it.
 ----------------------------------------------
-Status - Section 3 - Seeding the Database - completed
+Status - Section 3 - Overriding Conventions - completed
 
