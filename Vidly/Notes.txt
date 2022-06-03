@@ -404,5 +404,5 @@ type packagemanagerconsole
 In Press shortcut keys : press shortcut combination.e.g. Alt+/, Alt+.
 
 ----------------------------------------------
-Status - Section 3 - Adding custom shortcut - completed
+Status - Section 3 - Exercise 3 - completed
 
