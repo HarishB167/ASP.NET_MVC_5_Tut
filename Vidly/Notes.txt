@@ -331,6 +331,36 @@ add-migration AlreadyCreatedMigrationName  -force
 - Running migration
 In package manager console
 update-database
+
+
+4. Changing the Model
+Aim for small migrations
+Treat migrations like GIT commits
+Every entity (model) must have a key which will be primary key :
+Id or <ModelName>Id
+
+- Navigation Property
+Refering another model in a model.
+It allows navigating to another type.
+To load object with it's related objects.
+
+- To not load related objects.
+Add foriegn key as :
+public <numberType> <ReferedClass>Id { get; set; }
+
+
+5. Seeding the Database
+For consistency in prepopulating part of database for dev, test and prod databases.
+In code-first only by using migration.
+Entity framework can generate a SQL script from all migrations to apply on production database.
+Also from last few migrations for existing database.
+
+- Creating empty migration
+add-migration <MigrationName>
+
+- In Up method in empty migration file
+Add Sql("SQL statement to execute");
+
 ----------------------------------------------
-Status - Section 3 - Code first Migrations - completed
+Status - Section 3 - Seeding the Database - completed
 
