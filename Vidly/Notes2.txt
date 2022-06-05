@@ -1,0 +1,26 @@
+﻿ASP.NET MVC 5 : Part 2
+
+Section 4 : Building Forms
+
+1. The Markup
+Add action to represent a form
+In CustomerController add action named New.
+Add it's view :
+title and <h2> to New Customer
+Render form :
+.BeginForm returns Disposable object, so
+using block makes </form> render on Dispose() call.
+.LabelFor(<lambda expression>) - specifying model's property used.
+.TextBoxFor - automatic supports validation from model, 2nd argument can be object to specify extra html properties.
+@using (Html.BeginForm("targetAction", "ControllerName"))
+{
+    <div class="form-group">
+          @Html.LabelFor(m => m.Name)
+          @Html.TextBoxFor(m => m.Name, new { @class = "form-control" } )
+    </div>
+}
+----------------------------------------------
+Status - Section 4 - The markup - completed
+
+
+
