@@ -113,8 +113,36 @@ return View("CustomerForm", viewModel);
 In TextBoxFor in CustomerForm.cshtml
 Add format string at 2nd argument as :
 "{0:d MMM yyyy}"
+
+7. Updating Data
+- In CustomerForm rename action Create to Save.
+same rename in CustomersController.
+
+- Updating customer object values : 2 ways :
+1) TryUpdateModel(object) method :
+• It opens security holes : unauthorized updation of properties
+• Whitelisting creates magic strings.
+2) Manual set properties of object (Preffered way)
+customerInDb.Name = customer.Name; etc...
+
+- Changing Save action
+if (customer.Id == 0)
+    _context.Customers.Add(customer)
+else
+{
+    var customerInDb = _context.Customers.Single(c => c.Id == customer.Id);
+    customerInDb.Name = customer.Name;
+    customerInDb.Birthdate = customer.Birthdate;
+    customerInDb.MembershipTypeId = customer.MembershipTypeId;
+    customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
+}
+
+- As we relying on customer id
+Create id as hidden field before submit button in CustomerForm
+@Html.HiddenFor(m => m.Customer.Id)
+
 ----------------------------------------------
-Status - Section 4 - Edit Form - completed
+Status - Section 4 - Updating Data - completed
 
 
 
