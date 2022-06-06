@@ -142,7 +142,7 @@ Create id as hidden field before submit button in CustomerForm
 @Html.HiddenFor(m => m.Customer.Id)
 
 ----------------------------------------------
-Status - Section 4 - Updating Data - completed
+Status - Section 4 - Exercise - completed
 
 
 
