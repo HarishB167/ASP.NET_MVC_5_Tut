@@ -71,8 +71,24 @@ public ActionResult Create(NewCustomerViewModel viewModel)
     return View();
 }
 Model binding - ASP.NET automatically binds request data to the model parameter
+
+
+5. Saving Data
+- First add it to DbContext as :
+_context.Customers.Add(customer);
+It's not written to database, it is in memory.
+Changes are marked in DbContext.
+
+- To persist changes :
+_context.SaveChanges()
+It generates SQL statements based on all changes in DbContext
+and applies to database.
+They are wrapped around transaction (Either all will be persisted on no one will).
+
+- Redirect to List of customers
+return RedirectToAction("Index", "Customers");
 ----------------------------------------------
-Status - Section 4 - Model Binding - completed
+Status - Section 4 - Saving Data - completed
 
 
 
