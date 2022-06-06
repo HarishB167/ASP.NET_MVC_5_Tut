@@ -141,8 +141,18 @@ else
 Create id as hidden field before submit button in CustomerForm
 @Html.HiddenFor(m => m.Customer.Id)
 
+
+8. Troubleshooting Entity Validation Errors
+- DbEntityValidationException
+In Debug mode inspect variable e.
+try {
+_context.SaveChanges()
+catch (DbEntityValidationException e)
+{
+    Console.WriteLine(e);
+}
 ----------------------------------------------
-Status - Section 4 - Exercise - completed
+Status - Section 4 - Troubleshooting Entity Validation Errors - completed
 
 
 
