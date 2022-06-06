@@ -56,10 +56,23 @@ new SelectList(list of items, value property, display property),
 new {@class = "form-control"})
 
 -  In Customer model
-Using Data annotation set display value ot MembershipTypeId to Membership Type.
+Using Data annotation set display value of MembershipTypeId to Membership Type.
 
+4. Model Binding
+- Add button to form
+<button type="submit" class="btn btn-primary">Save</button>
+
+- Create action
+Apply [HttpPost] attribute - makes accept only Post request
+Action modifying data should not accept get request.
+Add parameter to action
+public ActionResult Create(NewCustomerViewModel viewModel)
+{
+    return View();
+}
+Model binding - ASP.NET automatically binds request data to the model parameter
 ----------------------------------------------
-Status - Section 4 - Drop-down Lists - completed
+Status - Section 4 - Model Binding - completed
 
 
 

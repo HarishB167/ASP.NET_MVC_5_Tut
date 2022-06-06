@@ -50,5 +50,11 @@ namespace Vidly.Controllers
             };
             return View(viewModel);
         }
+
+        [HttpPost]
+        public ActionResult Create(NewCustomerViewModel viewModel)
+        {
+            return View();
+        }
     }
 }
