@@ -19,8 +19,19 @@ using block makes </form> render on Dispose() call.
           @Html.TextBoxFor(m => m.Name, new { @class = "form-control" } )
     </div>
 }
+
+2. Form labels
+Changing labels : 2 options :
+1) Apply Data annotation in model as :
+[Display(Name = "Date of  Birth")]
+public DateTime? Birthdate {get; set;}
+It requires recompiling at every change
+2) Manually adding label as raw html
+<label for="Birthdate">Date of Birth</label>
+It requires adding for="" attribute to label
+Change of model properties is not updated in 'for' attribute.
 ----------------------------------------------
-Status - Section 4 - The markup - completed
+Status - Section 4 - Form labels - completed
 
 
 
