@@ -87,8 +87,34 @@ They are wrapped around transaction (Either all will be persisted on no one will
 
 - Redirect to List of customers
 return RedirectToAction("Index", "Customers");
+
+6. Edit Form
+- In ActionLink in Customes/Index.cshtml
+change action Details to Edit
+
+- Create Edit action
+Rename NewCustomerViewModel to CustomerFormViewModel
+Rename New.cshtml to CustomerForm.cshtml
+Same changes in New action also.
+public ActionResult Edit(int id)
+{
+var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+if (customer == null)
+    return HttpNotFound();
+var viewModel = new CustomerFormViewModel
+{
+Customer = customer,
+MembershipTypes = _context.MembershipTyeps.ToList()
+};
+return View("CustomerForm", viewModel);
+}
+
+- Fixing display of time component of birthdate
+In TextBoxFor in CustomerForm.cshtml
+Add format string at 2nd argument as :
+"{0:d MMM yyyy}"
 ----------------------------------------------
-Status - Section 4 - Saving Data - completed
+Status - Section 4 - Edit Form - completed
 
 
 
