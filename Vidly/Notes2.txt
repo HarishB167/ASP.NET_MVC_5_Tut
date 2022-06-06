@@ -30,8 +30,36 @@ It requires recompiling at every change
 <label for="Birthdate">Date of Birth</label>
 It requires adding for="" attribute to label
 Change of model properties is not updated in 'for' attribute.
+
+3. Drop-down Lists
+- In application db context add DbSet for membership types.
+public DbSet<MembershipType> MembershipTypes {get; set;}
+
+- Create a ViewModel for this action having Membership types and Customer having property as NewCustomerViewModel
+public IEnumerable<MembershipType> MembershipTypes {get; set;}
+public Customer Customer {get; set;}
+
+- In action method :
+Getting membership types from database
+var membershipTypes = _context.MembershipTypes.ToList();
+Using view model :
+var viewModel = new NewCustomerViewModel
+{ MembershipTypes = membershipTypes
+};
+
+- In view .cshtml file
+change @model ...NewCustomerViewModel
+Add select form group
+@Html.DropDownListFor(lambda function, 
+new SelectList(list of items, value property, display property),
+"Select membership type",
+new {@class = "form-control"})
+
+-  In Customer model
+Using Data annotation set display value ot MembershipTypeId to Membership Type.
+
 ----------------------------------------------
-Status - Section 4 - Form labels - completed
+Status - Section 4 - Drop-down Lists - completed
 
 
 
