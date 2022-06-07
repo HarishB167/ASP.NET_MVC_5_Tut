@@ -162,8 +162,13 @@ Section 5 : Implementing Validation
 3) Add validation messages in Forms.
 • Add placeholder for validation messages next to each field.
 • @Html.ValidationMessageFor(m => m.Customer.Name)
+
+2. Styling Validation Form
+- Adding css styles in Content/Site.css
+• For validation text : .field-validation-error { color : red; }
+• For input : .input-validation-error { border : 2px solid red; }
 ----------------------------------------------
-Status - Section 5 - Adding Validation - completed
+Status - Section 5 - Sytling Validation Form - completed
 
 
 
