@@ -167,8 +167,22 @@ Section 5 : Implementing Validation
 - Adding css styles in Content/Site.css
 • For validation text : .field-validation-error { color : red; }
 • For input : .input-validation-error { border : 2px solid red; }
+
+3. Data Annotations
+- Some data annotations
+• Required
+• StringLength(length)
+• Range(1,10) - on numeric properties
+• Compare("otherProperty")
+• Phone
+• EmailAddress
+• Url
+• RegularExpressions("...")
+
+- Custom validation Message
+[<DataAnnotation>(ErrorMessage = "message")]
 ----------------------------------------------
-Status - Section 5 - Sytling Validation Form - completed
+Status - Section 5 - Data Annotations - completed
 
 
 
