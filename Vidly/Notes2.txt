@@ -195,8 +195,19 @@ Return ValidationResult.Success for success.
 Return new ValidationResult("Error message") on failure.
 
 - Apply it to property of Model
+
+5. Refactoring Magic Numbers
+Magic numbers hurt maintainability of code.
+
+- Explicitly define numbers in domain model class as
+public static readonly <type> <varName> = <value>;
+
+- Replace magic numbers in validation class.
+
+- Another solution 
+• Enum : requires casting in validation class.
 ----------------------------------------------
-Status - Section 5 - Custom Validation - completed
+Status - Section 5 - Refactoring Magic Numbers - completed
 
 
 
