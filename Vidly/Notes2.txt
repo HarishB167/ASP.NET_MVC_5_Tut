@@ -181,8 +181,22 @@ Section 5 : Implementing Validation
 
 - Custom validation Message
 [<DataAnnotation>(ErrorMessage = "message")]
+
+4. Custom Validation
+- Create a class in Model folder - e.g. Min18YearsIfAMember
+inherits from ValidationAttribute
+using System.ComponentModel.DataAnnotations
+
+- Override IsValid(object, ValidationContext) method
+Use validationContext to access containing class.
+var customer = (Customer)validationContext.ObjectInstance;
+Add Logic of validation.
+Return ValidationResult.Success for success.
+Return new ValidationResult("Error message") on failure.
+
+- Apply it to property of Model
 ----------------------------------------------
-Status - Section 5 - Data Annotations - completed
+Status - Section 5 - Custom Validation - completed
 
 
 
