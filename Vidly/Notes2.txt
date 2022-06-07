@@ -221,8 +221,26 @@ Modfiy as : @Html.ValidationSummary(true, "error message")
 First arg is : exclude individual property errors
 
 - Better coding : Required fields may come first before optional fields.
+
+7. Client-side Validation
+- Benefits :
+• Immediate feedback
+• No waste of server resources
+
+- Enabling client-side validation
+In CustomerForm.cshtml add script section as :
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+- How it works
+• @Html helper methods adds addtional attributes.
+• Jquery checks inputs based on those attributes.
+• It only works with standard data annotatoin of .NET.
+• Custom Validation attribute (classes) requires writing jquery, and change of validation rules requires re-editing jquery.
 ----------------------------------------------
-Status - Section 5 - Validation Summary - completed
+Status - Section 5 - Client-side Validation - completed
 
 
 
