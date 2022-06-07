@@ -251,7 +251,7 @@ In CustomerForm.cshtml add script section as :
 • In CustomersController add attribute to Save action
 [ValidateAntiForgeryToken]
 ----------------------------------------------
-Status - Section 5 - Anti-forgery Tokens - completed
+Status - Section 5 - Exercise - completed
 
 
 
