@@ -206,8 +206,23 @@ public static readonly <type> <varName> = <value>;
 
 - Another solution 
 • Enum : requires casting in validation class.
+
+6. Validation summary
+- Displaying errors on top of form
+At form beginning add
+@Html.ValidationSummary()
+
+- Fixing Id field validation error
+In New action of CustomersController
+In viewModel add "Customer = new Customer(),"
+
+- Displaying single error text
+Modfiy as : @Html.ValidationSummary(true, "error message")
+First arg is : exclude individual property errors
+
+- Better coding : Required fields may come first before optional fields.
 ----------------------------------------------
-Status - Section 5 - Refactoring Magic Numbers - completed
+Status - Section 5 - Validation Summary - completed
 
 
 
