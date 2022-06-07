@@ -239,8 +239,19 @@ In CustomerForm.cshtml add script section as :
 • Jquery checks inputs based on those attributes.
 • It only works with standard data annotatoin of .NET.
 • Custom Validation attribute (classes) requires writing jquery, and change of validation rules requires re-editing jquery.
+
+8. Anti-forgery Tokens
+- CSRF : Cross-site Request Forgery
+
+- ASP.NET compares token in hidden input field and cookie stored.
+
+- 2 Steps :
+• In CustomerForm.cshtml add before button
+@Html.AntiForgeryToken()
+• In CustomersController add attribute to Save action
+[ValidateAntiForgeryToken]
 ----------------------------------------------
-Status - Section 5 - Client-side Validation - completed
+Status - Section 5 - Anti-forgery Tokens - completed
 
 
 
