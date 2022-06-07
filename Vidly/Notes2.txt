@@ -266,8 +266,25 @@ In CustomerForm.cshtml add script section as :
 
 - In Edit and Save action in MoviesController 
 • Edit as "new MovieFormViewModel(movie)"
+-----------------------------------------------------------
+
+Section 6 : Building RESTful Services with ASP.NET Web API
+
+1. What is a Web API
+- Benefits
+• Less server resources (imporve scalability)
+• Less bandwidth (improve performance)
+• Support for a broad range of clients (Web, Mobile, Tablet etc.)
+
+- Called as Data Services or Web APIs
+
+- Frameworks - ASP.NET Web API (follows ASP.NET MVC)
+• It has - Routing, Controllers, Action, ActionResult etc.
+
+- In ASP.NET Core both are merged (MVC and Web API)
+
 ----------------------------------------------
-Status - Section 5 - Code Review : Preventing showing of default values in form - completed
+Status - Section 6 - What is a Web API - completed
 
 
 
