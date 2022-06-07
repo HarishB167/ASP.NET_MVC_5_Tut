@@ -283,8 +283,18 @@ Section 6 : Building RESTful Services with ASP.NET Web API
 
 - In ASP.NET Core both are merged (MVC and Web API)
 
+2. RESTful Convention
+- REST : REpresentational State Transfer
+
+- API Endpoint : /api/customers
+• GET /api/customers - get all
+• GET /api/customers/1 - get one
+• POST /api/customers - add
+• PUT /api/customers/1 - edit one
+• DELETE /api/customers/1 - delete one
+
 ----------------------------------------------
-Status - Section 6 - What is a Web API - completed
+Status - Section 6 - RESTful Convention - completed
 
 
 
