@@ -151,8 +151,19 @@ catch (DbEntityValidationException e)
 {
     Console.WriteLine(e);
 }
+-----------------------------------------------------------
+
+Section 5 : Implementing Validation
+
+1. Adding Validation
+- 3 steps
+1) Add data annotation on entities.
+2) Change program flow using ModelState.IsValid in action methods. Return same view if not valid, if valid then redirect.
+3) Add validation messages in Forms.
+• Add placeholder for validation messages next to each field.
+• @Html.ValidationMessageFor(m => m.Customer.Name)
 ----------------------------------------------
-Status - Section 4 - Troubleshooting Entity Validation Errors - completed
+Status - Section 5 - Adding Validation - completed
 
 
 
