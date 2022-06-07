@@ -250,8 +250,24 @@ In CustomerForm.cshtml add script section as :
 @Html.AntiForgeryToken()
 • In CustomersController add attribute to Save action
 [ValidateAntiForgeryToken]
+
+9. Code review  - Preventing showing of default values in from
+- In New action remove "new Movie()" from viewModel
+
+- Create Pure View Model
+• Extract properties of Movie in MovieFormViewModel.
+• And make them nullable.
+• Also import System.ComponentModel.DataAnnotations.
+• Add [Required] attribute as required.
+• Change references in MovieForm.cshtml
+• Build constructor to accept Movie object.
+• Initialize properties in it.
+• Also create default constructor, with initializing "Id = 0".
+
+- In Edit and Save action in MoviesController 
+• Edit as "new MovieFormViewModel(movie)"
 ----------------------------------------------
-Status - Section 5 - Exercise - completed
+Status - Section 5 - Code Review : Preventing showing of default values in form - completed
 
 
 
