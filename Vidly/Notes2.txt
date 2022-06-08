@@ -293,8 +293,77 @@ Section 6 : Building RESTful Services with ASP.NET Web API
 • PUT /api/customers/1 - edit one
 • DELETE /api/customers/1 - delete one
 
+3. Building an API
+- Add folder as Controllers/Api/
+- In Api folder add Controller
+• Using template : Web API 2 Controller - Empty
+• Name it CustomersController
+
+- Configure Web API
+• In Global.asax.cs in Application_Start method add :
+GlobalConfiguration.
+Configure(WebApiConfig.Register);
+using System.Web.Http;
+
+- CustomersController api class
+• Derives from ApiController
+• Add application context
+private ApplicationDbContext _context;
+• In constructor :  _context = new ApplicationDbContext();
+
+- Get all customers :
+public IEnumerable<Customer> GetCustomers()
+{ return _context.Customers.ToList(); }
+
+- Get single customer :
+public Customer GetCustomer(int id)
+{ var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+    if (customer == null)
+        throw new HttpResponseException(HttpStatusCode.NotFound);
+    return customer;
+}
+
+- Create a customer :
+• Apply HttpPost attribute
+[HttpPost]
+public Customer CreateCustomer(Customer customer)
+{ 
+    if (!ModelState.IsValid)
+        throw new HttpResponseException(HttpStatusCode.BadRequest);
+    _context.Customers.Add(customer);
+    _context.SaveChanges();
+    return customer;
+}
+
+- Edit a customer :
+• Apply HttpPut attribute
+[HttpPut]
+public void UpdateCustomer(int id, Customer customer)
+{
+    if (!ModelState.IsValid)
+        throw new HttpResponseException(HttpStatusCode.BadRequest);
+    var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);
+    if (customersInDb == null)
+        throw new HttpResponseException(HttpStatusCode.NotFound);
+    customerInDb.Name = customer.Name;
+    customerInDb.Birthdate = customer.Birthdate;
+    ...and all other properties...
+    _context.SaveChanges();
+}
+
+- Delete a customer : 
+• Apply HttpDelete attribute
+[HttpDelete]
+public void DeleteCustomer(int id)
+{
+    var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);
+    if (customersInDb == null)
+        throw new HttpResponseException(HttpStatusCode.NotFound);
+    _context.Customers.Remove(customerInDb);
+    _context.SaveChanges();
+}
 ----------------------------------------------
-Status - Section 6 - RESTful Convention - completed
+Status - Section 6 - Building an API - completed
 
 
 
