@@ -432,8 +432,26 @@ customerDto.Id = customer.Id;
 • settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 • settings.Formatting = Formatting.Indented;
 
+8. IHttpActionResult
+- Currently Post request response with 200 instead of 201
+- So return IHttpActionResult in ALL api actions.
+- Api Controller has helper methods that create classes implementing IHttpActionResult.
+- Using it :
+1) Bad request - BadRequest()
+2) Not found - NotFound()
+3) Get one customer - Ok(old return object);
+4) Post - Created(new Uri(Request.RequestUri + "/" + customer.Id), customerDto);
+
+- Descriptions
+• Uri is defined in System namespace
+• Request.RequestUri -> gets uri of the request
+
+- In CustomerDto
+• Remove Min18YearsIfAMember attribute
+• It uses Customer model object instead of CustomerDto.
+• There should be only 1 way to create object.
 ----------------------------------------------
-Status - Section 6 - Using Camel Notation - completed
+Status - Section 6 - IHttpActionResult - completed
 
 
 
