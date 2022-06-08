@@ -424,8 +424,16 @@ using AutoMapper; using Vidly.App_Start;
 _context.Customers.Add(customer);
 customerDto.Id = customer.Id;
 4) Update - Mapper.Map<CustomerDto, Customer>(customerDto, customerInDb); and remove following assignment statements.
+
+7. Using Camel Notation
+- Making key names of api response camel case
+• In Register method of App_Start/WebApiConfig.cs add
+• var settings = config.Formatters.JsonFormatter.SerializerSettings;
+• settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+• settings.Formatting = Formatting.Indented;
+
 ----------------------------------------------
-Status - Section 6 - Auto Mapper - completed
+Status - Section 6 - Using Camel Notation - completed
 
 
 
