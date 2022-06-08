@@ -454,8 +454,8 @@ customerDto.Id = customer.Id;
 9. Exercise
 - Avoid setting of id property in update method in auto mapper
 • In MappingProfile change as :
-• CreateMap<Movie, MovieDto>().ForMember(m => m.Id, opt => opt.Ignore());
-• CreateMap<Customer, CustomerDto>().ForMember(c => c.Id, opt => opt.Ignore());
+• CreateMap<MovieDto, Movie>().ForMember(m => m.Id, opt => opt.Ignore());
+• CreateMap<CustomerDto, Customer>().ForMember(c => c.Id, opt => opt.Ignore());
 ----------------------------------------------
 Status - Section 6 - Exercise - completed
 
