@@ -1,0 +1,36 @@
+﻿ASP.NET MVC 5 : Part 3
+
+Section 7 : Client-side Development
+
+1. Calling an API using jQuery
+- Adding delete link in Customers list
+• In View/Customers/Index.cshtml
+• Give table id = "customers"
+• Add th of Delete
+• Add td with button as :
+<button data-customer-id="@customer.Id" class="btn-link js-delete">Delete</button>
+• At bottom of file add :
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#cusotmers .js-delete").on("click", function() {
+                 var button = $(this);
+                 if (confirm("Are you sure you want to delete this customer?")) {
+                      $.ajax({
+                            url: "/api/customers/" + button.attr("data-customer-id"),
+                            method: "DELETE",
+                            success: function () {
+                                 button.parents("tr).remove();
+                            }
+                       });
+                  }
+            });
+        });
+    </script>
+}
+----------------------------------------------
+Status - Section 7 - Calling an API using jQuery - completed
+
+
+
