@@ -392,8 +392,40 @@ XML (Default), JSON
 • Remove [Display] attributes
 • In action methods return CustomerDto by mapping it from customer obj
 • In modifying/creating action methods map CustomerDto to customer obj.
+
+6. Auto Mapper
+- Install automapper using package manager console
+install-package automapper -version:4.1
+
+- Auto mapper
+• uses reflection to scan types
+• It finds their properties
+• Maps props based on their names.
+• So, convention based mapping tool.
+
+- Create mapping profile
+• How different object types are mapped
+• In App_Start/ add class MappingProfile
+• It derives from Profile (using AutoMapper;)
+• In its constructor add
+Mapper.CreateMap<Customer, CustomerDto>();
+Mapper.CreateMap<CustomerDto, Customer>();
+• Loading at application start
+In Global.asax.cs in Application_Start method add
+Mapper.Initialize(c => c.AddProfile<MappingProfile>());
+using AutoMapper; using Vidly.App_Start;
+
+- Using mapping in controller
+• Change return type to CustomerDto
+• Map customer to dto :
+1) Getall - _context.Customers.ToList().Select(Mapper.Map<Customer, CustomerDto>);
+2) Get one - Mapper.Map<Customer, CustomerDto>(customer);
+3) Post - var customer = Mapper.Map<CustomerDto, Customer>(customerDto);
+_context.Customers.Add(customer);
+customerDto.Id = customer.Id;
+4) Update - Mapper.Map<CustomerDto, Customer>(customerDto, customerInDb); and remove following assignment statements.
 ----------------------------------------------
-Status - Section 6 - Data Transfer Objects - completed
+Status - Section 6 - Auto Mapper - completed
 
 
 
