@@ -450,8 +450,14 @@ customerDto.Id = customer.Id;
 • Remove Min18YearsIfAMember attribute
 • It uses Customer model object instead of CustomerDto.
 • There should be only 1 way to create object.
+
+9. Exercise
+- Avoid setting of id property in update method in auto mapper
+• In MappingProfile change as :
+• CreateMap<Movie, MovieDto>().ForMember(m => m.Id, opt => opt.Ignore());
+• CreateMap<Customer, CustomerDto>().ForMember(c => c.Id, opt => opt.Ignore());
 ----------------------------------------------
-Status - Section 6 - IHttpActionResult - completed
+Status - Section 6 - Exercise - completed
 
 
 
