@@ -368,8 +368,32 @@ public void DeleteCustomer(int id)
 XML (Default), JSON 
 - Need to specify Content-Type header for JSON
 - Using postman rest client shortcut to test
+
+5. Data Transfer Objects
+- Problem of using Domain Model in api
+• It is implementation detail
+• It can change frequently
+• Can break clients using api service.
+• Creates security holes in application.
+
+- DTO
+• used for stability, and less changes at client side.
+• plain data structure
+• transfer data between client and server.
+• Changing DTO is constly
+• Should plan strategy before changing DTOs (API versioning)
+• API should never receive/return domain objects.
+
+- Adding DTOs
+• Add folder "Dtos" in root
+• Create class CustomerDto in it.
+• Copy all properties of Customer model into CustomerDto
+• Any reference to Domain classes should be removed or create Dto classes for them also.
+• Remove [Display] attributes
+• In action methods return CustomerDto by mapping it from customer obj
+• In modifying/creating action methods map CustomerDto to customer obj.
 ----------------------------------------------
-Status - Section 6 - Testing an API - completed
+Status - Section 6 - Data Transfer Objects - completed
 
 
 
