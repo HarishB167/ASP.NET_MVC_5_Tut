@@ -57,8 +57,34 @@ $("#customers .js-delete").on(...);
 
 - Only 1 function in memory - associating function to table and filtering it in function
 $("#customers").on("click", ".js-delete", ...);
+
+
+4. DataTables Plug-in
+- Adding Pagination, Sorting and Filtering
+- DataTables makes list of customers (json in memory) from Dom elements.
+
+- Install DataTables as
+• install-package jquery.datatables -version:1.10.11
+
+- In App_Start/BundleConfig.cs
+• Consolidate bundles combine jquery and bootstrap as :
+1) In Views/Shared/_Layout.cshtml
+consolidate jquery and bootstrap to "lib"
+2) In BundleConfig.cs rename "jquery" to "lib".
+3) And append scripts of bootstrap bundle to this "lib" bundle.
+4) Remove bootstrap bundle.
+• In lib bundle add DataTable scripts
+1) "~/Scripts/datatables/jquery.datatables.js"
+2) "~/Scripts/datatables/datatables.bootstrap.js"
+• Add DataTable stylesheet to css bundle :
+"~/Content/datatables/css/datatables.bootstrap.css"
+
+- In jquery in Views/Customers/Index.cshtml
+At beginning of ready function add
+$("#customers").DataTable();
 ----------------------------------------------
-Status - Section 7 - Optimizing jQuery Code - completed
+Status - Section 7 - DataTables Plug-in - completed
+
 
 
 
