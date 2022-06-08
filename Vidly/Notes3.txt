@@ -50,8 +50,15 @@ bootbox.confirm("Are you sure you want to delete this customer?", function (resu
         ...delete ajax code here...
     }
 });
+
+3. Optimizing jQuery Code
+- Each delete button has handler function in memory
+$("#customers .js-delete").on(...);
+
+- Only 1 function in memory - associating function to table and filtering it in function
+$("#customers").on("click", ".js-delete", ...);
 ----------------------------------------------
-Status - Section 7 - Bootbox Plug-in - completed
+Status - Section 7 - Optimizing jQuery Code - completed
 
 
 
