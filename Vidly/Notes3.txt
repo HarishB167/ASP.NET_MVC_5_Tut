@@ -222,8 +222,26 @@ await UserManager.AddToRoleAsync(user.Id, "CanManageMovies");
 
 - We don't use Update-Database on Production database.
 
+
+5. Working with Roles
+- Restrict add, edit and delete to store managers : 2 ways
+1) Simple view - Show/Hide elements using priviledges
+2) Complex view - New view for less priviledges
+
+- In actions of Controller
+• Conditionally render using - User.IsInRole("CanManageMovies")
+
+- Making action callable by particular role
+• Apply Attribute
+[Authorize(Roles = "CanManageMovies, otherRole,...")]
+• Apply this on other attribute to other actions
+
+- Fixing magic string of role name
+• Create new STATIC class in Models folder - RoleName
+• add : public const string CanManageMovies = "CanManageMovies";
+• Replace all references.
 ----------------------------------------------
-Status - Section 8 - Seeding Users and Roles - completed
+Status - Section 8 - Working with Roles - completed
 
 
 
