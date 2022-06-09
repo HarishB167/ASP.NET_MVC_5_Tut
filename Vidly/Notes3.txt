@@ -135,9 +135,19 @@ table.row(button.parents("tr")).remove().draw().
 - Ajax call is made to api to get data and part of view is updated.
 - Benefits : Faster, Smoother
 - Client frameworks : Angular 2, Backbone, Ember
+-----------------------------------------------------------
+
+Section 8 : Authentication and Authorization
+
+1. Authentication Options
+- No Authentication
+- Individual User Accounts : Default, Internet websites, social login can be used.
+- Organizational Accounts : To enable single sign on for internal and cloud apps using active directory
+- Windows Authentication : For intranet applications
+
 
 ----------------------------------------------
-Status - Section 7 - Excercise - completed
+Status - Section 8 - Authentication Options - completed
 
 
 
