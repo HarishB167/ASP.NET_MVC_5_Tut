@@ -128,8 +128,16 @@ table.row(button.parents("tr")).remove().draw().
 • Implement searching, sorting and pagination at server
 • In DataTable enable server side processing
 - Code refactoring in jQuery code
+
+9. Single Page Applications
+- Views are generated on client
+- No use of MVC Razor views
+- Ajax call is made to api to get data and part of view is updated.
+- Benefits : Faster, Smoother
+- Client frameworks : Angular 2, Backbone, Ember
+
 ----------------------------------------------
-Status - Section 7 - DataTables - Discussion Points - completed
+Status - Section 7 - Single Page Applications - completed
 
 
 
