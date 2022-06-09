@@ -116,8 +116,14 @@ $("#customers").DataTable();
 • Add MembershipTypeDto field
 • In MappingProfile add : <MembershipType, MembershipTypeDto>
 • In Index.cshtml change 2nd column to "membershipType.name"
+
+7. DataTables - Removing Records
+- Take reference of DataTable at beginning as
+var table = $("#customers").DataTable(...);
+- Change success key function of ajax call as :
+table.row(button.parents("tr")).remove().draw().
 ----------------------------------------------
-Status - Section 7 - Returning Hierarchial Data - completed
+Status - Section 7 - DataTables - Removing Records - completed
 
 
 
