@@ -276,8 +276,42 @@ await UserManager.AddToRoleAsync(user.Id, "CanManageMovies");
 • Enable SSL
 • Register app with Facebook.
 
+8. Social Logins
+- Enable SSL
+• In Solution Explorer select project > Press F4
+• SSL Enables : True
+• Copy SSL URL
+• Right click project > Properties
+• In Web > Project Url > replace with copied url
+• Trust dummy genrated Certificate and install
+
+- Making HTTP inaccessible
+• In App_Start/FilterConfig add
+• filters.Add(new RequireHttpsAttribute());
+
+- Register application with facebook
+• developers.facebook.com
+• My apps > Add a New App > Website
+• Type app name > Create new facebook App ID
+• Put email, category
+• Put url of vidly app : localhost:port
+• Skip to developer dashboard
+• Copy app id and app secret
+
+- In App_Start/StartupAuth
+• Uncomment app.UseFacebookAuthentication
+• Paste app id and app secret
+
+- Adding driver license to social login form
+• In Views/Account/ExternalLoginConfirmation.cshtml
+• Add form group for driving license
+• In Models/AccountViewModels in ExternalLoginConfirmationViewModel class
+• add property for DrivingLicense with Required, Display
+• In Controllers/AccountController in ExternalLoginConfirmation action
+• change as -> new ApplicationUser {..., DrivingLicense = model.DrivingLicense};
+
 ----------------------------------------------
-Status - Section 8 - OAuth - completed
+Status - Section 8 - Social Logins - completed
 
 
 
