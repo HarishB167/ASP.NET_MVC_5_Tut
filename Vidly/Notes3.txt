@@ -145,9 +145,42 @@ Section 8 : Authentication and Authorization
 - Organizational Accounts : To enable single sign on for internal and cloud apps using active directory
 - Windows Authentication : For intranet applications
 
+2. ASP.NET Identity
+- Registration feature works using framewrok ASP.NET Identity
+- Previously called ASP.NET Membership
+- Architecture
+• Domain classes : IdentityUser, Role
+• API / Service : UserManager, RoleManager, SignInManager
+• Persistence store : UserStore, RoleStore
+
+- Persistence store 
+• These are classes which internally communicates to Domain and API classes.
+• Implemented by ASP.NET Identity using Entity Framework and Relational SQL Database.
+• Custom implemenation possible using No-sql database.
+
+- Automatically generated tables at first migration
+• AspNetRoles, AspNetUserRoles, AspNetUsers
+• Generated based on domain model of ASP.NET Identity framework.
+
+- In Models/IdentityModels.cs
+• ApplicationUser derives from IdentityUser
+• ApplicationDbContext derives from IdentityDbContext
+• Both parents are part of ASP.NET Identity framework
+
+- In Contollers/AccountController.cs
+• Exposes actions : Register, Login, Logoff
+• Register : 2 actions
+1) Loading registration form
+2) When form is posted
+
+- User registration process
+• ModelState validity checked
+• New ApplicationUser is created
+• UserManger.CreateAsync(...) is called
+• If successful SignInManager is used to sign in.
 
 ----------------------------------------------
-Status - Section 8 - Authentication Options - completed
+Status - Section 8 - ASP.NET Identity - completed
 
 
 
