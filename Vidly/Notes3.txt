@@ -107,8 +107,17 @@ $("#customers").DataTable();
 • Remove if else condition.
 • In Index action of CustomersController
 • Remove return of list of customers.
+
+
+6. Returning Hierarchial Data
+• In CustomersController in GetCustomers eager load MembershipType
+• Create MembershipTypeDto with fields byte Id and string Name.
+• In CustomerDto
+• Add MembershipTypeDto field
+• In MappingProfile add : <MembershipType, MembershipTypeDto>
+• In Index.cshtml change 2nd column to "membershipType.name"
 ----------------------------------------------
-Status - Section 7 - DataTables with Ajax source - completed
+Status - Section 7 - Returning Hierarchial Data - completed
 
 
 
