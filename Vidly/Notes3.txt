@@ -179,8 +179,51 @@ Section 8 : Authentication and Authorization
 • UserManger.CreateAsync(...) is called
 • If successful SignInManager is used to sign in.
 
+3. Restricting Access
+- Attribute / Filter : [Authorize]
+• Applied to action, controller or globally(preferred)
+• Applied on action : attribute will check login status, then action will be executed.
+
+- Globally applying [Authorize]
+• In App_Start/FilterConfig.cs
+• Register global filter as :
+• filters.Add(new AuthorizeAttribute());
+
+- Make a page annonymous accessible
+• Apply [AllowAnonymous] to actions or controllers.
+
+4. Seeding Users and Roles
+- Creating roles
+
+- Register Guest user
+• In register page register guest user
+
+- Register Admin user
+• In Controllers/AccountController.cs in Register method
+• Temporarily modify logic to any new user to have store manager role.
+• After user creation is successful
+var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
+var roleManager = new RoleManager<IdentityRole>(roleStore);
+await roleManager.CreateAsync(new IdentityRole("CanManageMovies"));
+await UserManager.AddToRoleAsync(user.Id, "CanManageMovies");
+• In register page register admin user
+• Remove all temporary 4 lines.
+
+- Deploying users and roles with application
+• Create emtpy migration SeedUsers
+• In solution explorer click show all files.
+• open database in App_Data/<database>
+• Right click AspNetUsers > Show Table Data
+• Select both users > Right click > Script
+• Copy this script to migration file in Sql(@"<sql code>")
+• Same for AspNetRoles and AspNetUserRoles
+• Remove all records from these 3 tables
+• Run the migration
+
+- We don't use Update-Database on Production database.
+
 ----------------------------------------------
-Status - Section 8 - ASP.NET Identity - completed
+Status - Section 8 - Seeding Users and Roles - completed
 
 
 
