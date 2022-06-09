@@ -259,8 +259,25 @@ await UserManager.AddToRoleAsync(user.Id, "CanManageMovies");
 - In Controllers/AccountController.cs in Register action
 • Add as -> new ApplicationUser{..., DrivingLicense = model.DrivingLicense}
 
+7. OAuth
+- Open Authorisation
+- Working :
+• Register Vidly to Facebook
+• Facebook gives apiKey and secret
+• John logins using facebook
+• Redirects to Facebook with key and secret using HTTPS
+• John logins into facebook
+• John gives permission to access information
+• Facebook redirects to Vidly with authorization token
+• Vidly sends auth token, key and secret to Facebook for confirmation
+• Facebook gives access token to Vidly.
+
+- Using Social Logins :
+• Enable SSL
+• Register app with Facebook.
+
 ----------------------------------------------
-Status - Section 8 - Adding Profile Data - completed
+Status - Section 8 - OAuth - completed
 
 
 
