@@ -82,8 +82,33 @@ consolidate jquery and bootstrap to "lib"
 - In jquery in Views/Customers/Index.cshtml
 At beginning of ready function add
 $("#customers").DataTable();
+
+5. DataTables with Ajax Source
+- Using api as source of data
+• Add configuration object arg to DataTable()
+• {
+    ajax : {
+        url: "/api/customers",
+        dataSrc: "" // Specifying where data is nested in response.
+    },
+    columns: [
+         { data: "name", // property of customer object
+            render : function (data, type, customer) {
+                return "<a href='/customers/edit/" + customer.id + "'>" + customer.name + "</a>"; }
+          },
+            { data: "name"},
+            { data: "id", render: function(data) {
+              return "<button class='btn-link js-delete' data-customer-id="
+                   + data + ">Delete</button>"; }
+          }
+    ]
+}
+• Remove foreach block in table.
+• Remove if else condition.
+• In Index action of CustomersController
+• Remove return of list of customers.
 ----------------------------------------------
-Status - Section 7 - DataTables Plug-in - completed
+Status - Section 7 - DataTables with Ajax source - completed
 
 
 
