@@ -122,8 +122,14 @@ $("#customers").DataTable();
 var table = $("#customers").DataTable(...);
 - Change success key function of ajax call as :
 table.row(button.parents("tr")).remove().draw().
+
+8. DataTables - Discussion Points
+- For large records
+• Implement searching, sorting and pagination at server
+• In DataTable enable server side processing
+- Code refactoring in jQuery code
 ----------------------------------------------
-Status - Section 7 - DataTables - Removing Records - completed
+Status - Section 7 - DataTables - Discussion Points - completed
 
 
 
