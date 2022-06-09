@@ -240,8 +240,27 @@ await UserManager.AddToRoleAsync(user.Id, "CanManageMovies");
 • Create new STATIC class in Models folder - RoleName
 • add : public const string CanManageMovies = "CanManageMovies";
 • Replace all references.
+
+ 6. Adding Profile Data
+- Changing register form
+- Adding Driving license field
+• In Models/IdentityModels.cs in ApplicationUser add
+• prop DrivingLicense: Required, StringLength(255)
+• Create migration : AddDrivingLicenseToApplicationUser
+• Run migration : existing user's license is set to empty string
+
+- In Models/AccountViewModels.cs in RegisterViewModel class
+• Add property of driving license
+• attribute : Required, Display(Name=)
+
+- In Views/Account/Register.cshtml
+• Add form group for driving license
+
+- In Controllers/AccountController.cs in Register action
+• Add as -> new ApplicationUser{..., DrivingLicense = model.DrivingLicense}
+
 ----------------------------------------------
-Status - Section 8 - Working with Roles - completed
+Status - Section 8 - Adding Profile Data - completed
 
 
 
