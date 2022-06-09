@@ -311,7 +311,7 @@ await UserManager.AddToRoleAsync(user.Id, "CanManageMovies");
 • change as -> new ApplicationUser {..., DrivingLicense = model.DrivingLicense};
 
 ----------------------------------------------
-Status - Section 8 - Social Logins - completed
+Status - Section 8 - Exercise - completed
 
 
 
