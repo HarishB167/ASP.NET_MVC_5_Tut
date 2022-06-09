@@ -137,7 +137,7 @@ table.row(button.parents("tr")).remove().draw().
 - Client frameworks : Angular 2, Backbone, Ember
 
 ----------------------------------------------
-Status - Section 7 - Single Page Applications - completed
+Status - Section 7 - Excercise - completed
 
 
 

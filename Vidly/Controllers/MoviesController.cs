@@ -25,14 +25,16 @@ namespace Vidly.Controllers
 
         public ActionResult Index()
         {
-            var movies = _context.Movies.Include(m => m.Genre);
-            return View(movies);
+            return View();
         }
 
         [Route("movies/details/{id:regex(\\d)}")]
         public ActionResult Details(int id)
         {
-            var movie = _context.Movies.Include(m => m.Genre).SingleOrDefault(m => m.Id == id);
+            var movie = _context.Movies
+                .Include(m => m.Genre)
+                .ToList()
+                .SingleOrDefault(m => m.Id == id);
 
             if (movie == null)
                 return HttpNotFound();
