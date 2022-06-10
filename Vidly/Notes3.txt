@@ -374,8 +374,19 @@ Section 9 : Performance Optimization
 
 - Disabling caching of browsers
 • Use [OutputCache(Duration=0, VaryByParam="*", NoStore=true)]
+
+
+5. Data Caching
+- Only after Performance Profiling
+- Cons : Increase memory consumption, Makes complex
+- Use it for only actions of displaying data
+- Using as :
+• Import System.Runtime.Caching
+• Store and retrieve from MemoryCache.Default["<keyName>"]
+• Casting on retrieving : ... as IEnumerable<Genre>;
+
 ----------------------------------------------
-Status - Section 9 - Application Tier - Output Cache - completed
+Status - Section 9 - Data Caching - completed
 
 
 
