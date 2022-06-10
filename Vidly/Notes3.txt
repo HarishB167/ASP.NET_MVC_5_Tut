@@ -309,9 +309,24 @@ await UserManager.AddToRoleAsync(user.Id, "CanManageMovies");
 • add property for DrivingLicense with Required, Display
 • In Controllers/AccountController in ExternalLoginConfirmation action
 • change as -> new ApplicationUser {..., DrivingLicense = model.DrivingLicense};
+-----------------------------------------------------------
+
+Section 9 : Performance Optimization
+
+1. Overview
+- Premature optimization is the root of all evils.
+• Profile first, then optimize.
+
+- 3-tier Architecture
+• Tier - where code runs - Data, Application, Client
+
+- Performance optimization
+• Data Tier - More Gain 
+• Application - Moderate Gain
+• Client Tier - Less Observable Gain
 
 ----------------------------------------------
-Status - Section 8 - Exercise - completed
+Status - Section 9 - Overview - completed
 
 
 
