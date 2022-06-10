@@ -325,8 +325,26 @@ Section 9 : Performance Optimization
 • Application - Moderate Gain
 • Client Tier - Less Observable Gain
 
+2. Data Tier
+- Causes : Schema, Queries
+
+- Schema Issues : Primiary keys, Relationships, Indexes
+- Schema related : Entity-Attribute-Value (EAV)
+- Probles of EAV Pattern
+• No ORMs
+• Long queries
+• Extremely slow
+
+- Queries
+• Keep an eye on queries run by Entity Framework
+• Use stored procedure as required.
+
+- Optimizing Queries
+• Use Execution Plan in SQL Server
+• Create a "read" database (look up CQRS(Comman query responsibility segregation))
+• Use caching
 ----------------------------------------------
-Status - Section 9 - Overview - completed
+Status - Section 9 - Data Tier - completed
 
 
 
