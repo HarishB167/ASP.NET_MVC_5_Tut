@@ -343,8 +343,39 @@ Section 9 : Performance Optimization
 • Use Execution Plan in SQL Server
 • Create a "read" database (look up CQRS(Comman query responsibility segregation))
 • Use caching
+
+3. Glimpse
+- Installing
+• install-package glimpse.mvc5
+• install-package glimpse.ef6
+
+- Go to domain/glimpse.axd and Turn on glimpse
+
+- Working
+• Glimpse puts cookie on machine
+• This cookie is sent and fort b/w requests
+• Glimpse renders diagnostics on finding that cookie.
+
+- Uses
+• What queries are run on DB
+• How many queries
+• Queries execution time
+
+- Job Interview question : N + 1 issue
+
+4. Application Tier - Output Cache
+- Enable caching using attribute [OutputCache]
+• On actions, Controllers
+
+- Parameters of OutputCache
+• Duration : time in seconds
+• Location : OutputCacheLocation.server or client
+• VaryByParam : Different cache for different action params
+
+- Disabling caching of browsers
+• Use [OutputCache(Duration=0, VaryByParam="*", NoStore=true)]
 ----------------------------------------------
-Status - Section 9 - Data Tier - completed
+Status - Section 9 - Application Tier - Output Cache - completed
 
 
 
