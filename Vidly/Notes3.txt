@@ -385,8 +385,23 @@ Section 9 : Performance Optimization
 • Store and retrieve from MemoryCache.Default["<keyName>"]
 • Casting on retrieving : ... as IEnumerable<Genre>;
 
+6. Async
+- Improves scalability, when not using single instance SQL server.
+
+7. Release Builds : Produces application without debugging code.
+
+8. Disabling Session
+- What : web server memory allocated to each user.
+- More users means more memory required.
+- Reduces scalability.
+- Session are not used these days.
+- Application should be stateless : Not storing state of a request.
+- Disabling session
+* In solution explorer Web.config
+* In <system.web> add
+* <sessionState mode="Off"></sessionState> 
 ----------------------------------------------
-Status - Section 9 - Data Caching - completed
+Status - Section 9 - Disabling Session - completed
 
 
 
