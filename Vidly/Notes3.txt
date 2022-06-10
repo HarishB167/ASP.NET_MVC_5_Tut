@@ -400,8 +400,13 @@ Section 9 : Performance Optimization
 * In solution explorer Web.config
 * In <system.web> add
 * <sessionState mode="Off"></sessionState> 
+
+9. Client Tier
+- Reduce requests count and response size 
+- Keep DTOs, js, css, images ligthweight
+- ASP.NET automatically makes bundles in release build using Web.Release.config
 ----------------------------------------------
-Status - Section 9 - Disabling Session - completed
+Status - Section 9 - Client Tier - completed
 
 
 
