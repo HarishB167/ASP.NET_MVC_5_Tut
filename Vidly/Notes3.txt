@@ -405,8 +405,10 @@ Section 9 : Performance Optimization
 - Reduce requests count and response size 
 - Keep DTOs, js, css, images ligthweight
 - ASP.NET automatically makes bundles in release build using Web.Release.config
+
+10. Chrome Developer Tools - Using Disabled cache
 ----------------------------------------------
-Status - Section 9 - Client Tier - completed
+Status - Section 9 - Chrome Developer Tools - Using Disabled cache - completed
 
 
 
