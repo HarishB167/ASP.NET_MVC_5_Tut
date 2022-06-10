@@ -443,6 +443,7 @@
     <Content Include="Notes.txt" />
     <Content Include="Notes2.txt" />
     <Content Include="Notes3.txt" />
+    <Content Include="Notes4.txt" />
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\bootbox.js" />

@@ -1,0 +1,22 @@
+﻿ASP.NET MVC 5 : Part 4
+
+Section 10 : Building a Feature End-to-End Systematically
+
+1. Understanding the Problem
+- Ask questions for use case
+• Add the ability to record rentals
+
+- Approach : Frontend, Back-end
+• Start from backend then go to front-end
+• To avoid over engineering
+• Focus on input/output of application
+
+- Use Case : New Rental
+- Input : Customer and Movies
+- Output : No output
+
+- Action : MVC Controller or API Controller
+
+----------------------------------------------
+Status - Section 10 - Understanding the Problem - completed
+
