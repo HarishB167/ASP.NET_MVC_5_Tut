@@ -179,6 +179,26 @@ $("#newRental").submit(function (e) {
     return vm.customerId && vm.customerId !== 0;
 }, "<error message>");
 • Apply as : <input ... data-rule-validCustomer="true" ...
+
+15. Code review
+- Preventing form submit
+• Remove e.preventDefault() from validate
+• return false in submitHandler function
+
+- Validation message issue
+• Assign name attributes to input fields for customer and movie
+
+- Clearing form on success in done() method
+• $("#customer").typeahead("val","");
+• $("#movie").typeahead("val","");
+• $("#movies").empty();
+• vm = { movieIds: [] };
+
+- Reset form validation state
+- Assign validate method result to validator
+- In done method : validator.resetForm();
+
+- Code refactoring is required in OOP design.
 ----------------------------------------------
-Status - Section 10 - Implementing Client-side validation - completed
+Status - Section 10 - Code review - completed
 
