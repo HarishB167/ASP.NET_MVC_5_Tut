@@ -235,6 +235,17 @@ Section 11 : Deployment
 - Connection : Publish method
 • Web Deploy - Depending upon IIS with admin
 • FTP, File system
+
+
+2. Deploying the Database
+- Creating deployment script for database
+• In Package manager console
+• For all migration files : update-database -script
+• For only few last migration files : update-database -script -SourceMigration:<MigrationName>
+
+- Migrations include Schema and Reference Data changes.
+- List of applied migration are listed in __MIgrationHistory table.
+
 ----------------------------------------------
-Status - Section 11 - Deploying the Application - completed
+Status - Section 11 - Deploying the Database - completed
 
