@@ -246,6 +246,17 @@ Section 11 : Deployment
 - Migrations include Schema and Reference Data changes.
 - List of applied migration are listed in __MIgrationHistory table.
 
+3. Build Configurations
+- Creating configuration
+• In Toolbar Dropdown list beside 'Any CPU'
+• Select Configuration manager
+• Active solution configuration > <New>
+• Give Name : Testing
+• Copy settings from Release > OK 
+• In solution explorer
+• Right click Web.config > Add Config Transform
+• Specify settings such as connectionString
+• Create a new publish profile for Testing
 ----------------------------------------------
-Status - Section 11 - Deploying the Database - completed
+Status - Section 11 - Build Configurations - completed
 
