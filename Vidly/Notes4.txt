@@ -17,6 +17,13 @@ Section 10 : Building a Feature End-to-End Systematically
 
 - Action : MVC Controller or API Controller
 
+2. Create API
+- create controller, api action and Dto
+
+3. Domain Modelling
+- Create associative model b/w Customer and Movie
+- Rental : has properties - DateRented, DateReturned, Customer, Movie, Id
+- Do code first migration
 ----------------------------------------------
-Status - Section 10 - Code Review - Exercise - Create API - completed
+Status - Section 10 - Domain Modelling - completed
 
