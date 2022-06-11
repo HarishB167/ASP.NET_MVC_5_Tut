@@ -37,6 +37,7 @@ namespace Vidly.Controllers.Api
                 };
 
                 _context.Rentals.Add(rental);
+                movie.NumberAvailable--;
             }
 
             _context.SaveChanges();

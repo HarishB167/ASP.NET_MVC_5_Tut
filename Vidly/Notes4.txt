@@ -27,6 +27,14 @@ Section 10 : Building a Feature End-to-End Systematically
 
 4. Building the Simplest API
 - Implement happy path of CreateNewRentals action
+- Get customer
+- Get movies using Where and Contains method as : 
+var movies = ....Where(m => newRental.MovieIds.Contains(m.Id))
+
+5. Adding the Details - Update availability of movies
+- Add property NumberAvailable to Movies
+- Change action CreateNewRentals to decrement same
+- In MoviesControllers in CreateMovie setting same.
 ----------------------------------------------
-Status - Section 10 - Building the Simplest API - Solution - completed
+Status - Section 10 - Adding the Details - Update movies availability - completed
 
