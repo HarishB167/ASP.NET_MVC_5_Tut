@@ -257,6 +257,29 @@ Section 11 : Deployment
 • Right click Web.config > Add Config Transform
 • Specify settings such as connectionString
 • Create a new publish profile for Testing
+
+4. Application Settings
+- Don't store settings in code
+- Storing in web.config file
+• In appSettings element
+• add key value pair as
+<add key="keyName" value="keyValue" />
+
+- Reading application settings
+• using System.Configuration
+• var keyValue = ConfigurationManager.AppSettings["keyName"]
+• Values are stored as strings
+• Other types need to be converted.
+
+- Overriding Web.config with Web.<Other>.config
+•  Apply transformation on elements as
+• <element ... xdt:Transform="SetAttributes" 
+     xdt:Locator="Match(<key>)" />
+• It find elements with <key> attribute, then sets all other attributes based on this file values.
+
+- Preview transformation output
+• In solution explorer
+• Right click Web.<Other>.config > Preview Transform
 ----------------------------------------------
-Status - Section 11 - Build Configurations - completed
+Status - Section 11 - Application Settings - completed
 
