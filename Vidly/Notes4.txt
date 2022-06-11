@@ -96,6 +96,8 @@ secondarg : { name: 'customers', display: 'name', source: customers }
 • On selection : .typeahead(...).on("typeahead:select", function (e, customer) { vm.customerId = customer.id;}),
 also declare vm object before.
 
+- Error of not rendering of movies autocomplete
+• add limit:50 before name:'movies'
 ----------------------------------------------
 Status - Section 10 - Adding auto-completion - completed
 
