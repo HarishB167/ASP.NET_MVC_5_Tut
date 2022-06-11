@@ -19,26 +19,22 @@ namespace Vidly.Controllers.Api
         }
 
         [HttpPost]
-        public IHttpActionResult CreateNewRentals(NewRentalDto rentalDto)
+        public IHttpActionResult CreateNewRentals(NewRentalDto newRental)
         {
-            if (!ModelState.IsValid)
+            var customer = _context.Customers.Single(c => c.Id == newRental.CustomerId);
+
+            var movies = _context.Movies.Where(m => newRental.MovieIds.Contains(m.Id));
+
+            foreach (var movie in movies)
             {
-                var msg = String.Format("rentalDto : {0}", rentalDto);
-                return BadRequest(msg);
-            }
-
-            var customer = _context.Customers.SingleOrDefault(c => c.Id == rentalDto.CustomerId);
-
-            foreach (var movieId in rentalDto.MovieIds)
-            {
-                var movie = _context.Movies.SingleOrDefault(m => m.Id == movieId);
-
-                Rental rental = new Rental();
-                rental.Customer = customer;
-                rental.CustomerId = customer.Id;
-                rental.Movie = movie;
-                rental.MovieId = movie.Id;
-                rental.DateRented = DateTime.Now;
+                var rental = new Rental
+                {
+                    Customer = customer,
+                    CustomerId = customer.Id,
+                    Movie = movie,
+                    MovieId = movie.Id,
+                    DateRented = DateTime.Now
+                };
 
                 _context.Rentals.Add(rental);
             }

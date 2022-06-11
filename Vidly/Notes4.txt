@@ -28,5 +28,5 @@ Section 10 : Building a Feature End-to-End Systematically
 4. Building the Simplest API
 - Implement happy path of CreateNewRentals action
 ----------------------------------------------
-Status - Section 10 - Building the Simplest API - completed
+Status - Section 10 - Building the Simplest API - Solution - completed
 
