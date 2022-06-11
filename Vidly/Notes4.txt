@@ -24,6 +24,9 @@ Section 10 : Building a Feature End-to-End Systematically
 - Create associative model b/w Customer and Movie
 - Rental : has properties - DateRented, DateReturned, Customer, Movie, Id
 - Do code first migration
+
+4. Building the Simplest API
+- Implement happy path of CreateNewRentals action
 ----------------------------------------------
-Status - Section 10 - Domain Modelling - completed
+Status - Section 10 - Building the Simplest API - completed
 
