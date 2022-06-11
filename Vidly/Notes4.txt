@@ -98,6 +98,34 @@ also declare vm object before.
 
 - Error of not rendering of movies autocomplete
 • add limit:50 before name:'movies'
+
+
+9. Updating the DOM
+- Adding movie to list
+• Add ul before button as : ul#movies.list-group
+• In callback function : append li with movie name as
+$("#movies").append("<li>" + movie.name + "</li>");
+
+- Clear the movie text box : $("#movie").typeahead("val","");
+
+- Store in view model : 
+• Add movieIds empty array to vm
+• Then add vm.movieIds.push(movie.id);
+
+- For complex structure use frontend frameworks
+
+10. Improving the Look and Feel
+- Inline text boxes
+• typeahead wraps input text box with another div as relative positioned.
+• Create div around input text box with class tt-container
+• In typeahead.css add class as
+.tt-container { position:relative; }
+
+- Movies list with bullet points
+• In js code in <li> add class='list-group-item'
+
+- Reducing width of list item
+• Create div around ul as : div.row>div.col-md-4.col-sm-4
 ----------------------------------------------
-Status - Section 10 - Adding auto-completion - completed
+Status - Section 10 - Improving the Look and Feel - completed
 
