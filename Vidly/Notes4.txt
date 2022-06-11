@@ -58,6 +58,44 @@ var movies = ....Where(m => newRental.MovieIds.Contains(m.Id))
 - Add submit button.btn.btn-primary
 - Add link to _NavBar.cshtml
 
+8. Adding Auto-completion
+- install Typeahead jquery plugin
+• install-package Twitter.Typeahead
+
+- In BundleConfig in bundels/lib add 
+scripts/typeahead.bundle.js
+
+- Getting css
+• search typeahead .js
+• go to examples page
+• Copy css from page's source
+from : .typehead {background-color} to .tt-suggestion p {...}
+• Create typeahead.css in Content folder
+• Paste there
+• In BundleConfig add css bundle
+
+- Using plugin
+• in examples page > click Remote
+• Copy javascript of input
+• In New.cshtml of Rental add
+@section scripts
+{
+<script>$(document).ready(function() { <Paste here> });</script>
+}
+• Rename bestPictures to customers
+• datumTokenizer :
+References function taking a datum and transforming to string tokens. Rename value to name.
+• queryTokenizer : function transforms query into tokens
+• prefetch key : provides data on initialization, preventing additional requests. Remove it.
+• remote : change url to /api/customers?query=%QUERY
+• In reference to textbox change 'remote .typhead' to 'customer'
+• Assign this id 'customer' to textbox
+• .typhead method :
+firstarg : {minLength : 3, highlight : true }
+secondarg : { name: 'customers', display: 'name', source: customers }
+• On selection : .typeahead(...).on("typeahead:select", function (e, customer) { vm.customerId = customer.id;}),
+also declare vm object before.
+
 ----------------------------------------------
-Status - Section 10 - Building the Front-end - completed
+Status - Section 10 - Adding auto-completion - completed
 
