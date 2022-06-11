@@ -35,6 +35,15 @@ var movies = ....Where(m => newRental.MovieIds.Contains(m.Id))
 - Add property NumberAvailable to Movies
 - Change action CreateNewRentals to decrement same
 - In MoviesControllers in CreateMovie setting same.
+
+6. Edge Cases
+- Defensive : for public apis, lots of validation required.
+- Optimistic : for private apis, used by frontend.
+- Cases : 
+• CustomerId is invalid
+• No MovieIds
+• One of more MovieIds are invalid
+• One of more movies are not available
 ----------------------------------------------
-Status - Section 10 - Adding the Details - Update movies availability - completed
+Status - Section 10 - Edge cases - completed
 
