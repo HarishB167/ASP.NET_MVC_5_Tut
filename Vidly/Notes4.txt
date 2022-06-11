@@ -135,6 +135,20 @@ $("#movies").append("<li>" + movie.name + "</li>");
 
 - In Api/MoviesController
 • Filter for name and availability.
+
+12. Submitting the Form
+- Clear records in Rentals table in database
+- Add id newRental to form
+- In js code handle submit event as
+$("#newRental").submit(function (e) {
+    e.preventDefault();
+    $.ajax({
+       url: "/api/newRentals",
+       method: "post",
+       data: vm
+     }).done(function() {console.log("done");})
+     .fail(function() {});
+}
 ----------------------------------------------
-Status - Section 10 - Filter the Records - completed
+Status - Section 10 - Submitting the Form - completed
 
