@@ -211,6 +211,30 @@ $("#newRental").submit(function (e) {
 - Add the details one by one
 - Move on to the front end
 
+-----------------------------------------------------------
+
+Section 11 : Deployment
+
+1. Deploying the Application
+- In solution explorer
+• Right click > Publish
+• Select Custom
+• Give profile name
+• Connection > File system
+• Give Target Location
+• Settings > Configuration > Release
+• Click Publish
+
+- Publish profile : settings set for servers
+
+- Publish targets
+• Microsoft Azure websites
+• Import : Using existing publish profile
+• Custom : Creating publish profile
+
+- Connection : Publish method
+• Web Deploy - Depending upon IIS with admin
+• FTP, File system
 ----------------------------------------------
-Status - Section 10 - Summary - completed
+Status - Section 11 - Deploying the Application - completed
 
