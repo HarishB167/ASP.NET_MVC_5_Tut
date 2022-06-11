@@ -280,6 +280,38 @@ Section 11 : Deployment
 - Preview transformation output
 • In solution explorer
 • Right click Web.<Other>.config > Preview Transform
+
+
+5. Securing Configuration Settings
+- Security Risks
+• Storing secret as plain text
+
+- Exclude secret from source control
+• In solution explorer
+• Right click > Add > New Item
+• Web > Web Configuration File
+• Name as AppSettings.config
+• IIS by default doesn't serve config files
+• Move appSettings to this file
+• In Web.config add appSettings with attribute
+• configSource="AppSetting.config"
+• AppSetting.config file should be excluded from source control
+• Can do same for connectionStrings
+
+- Encrypting secrets for Web server
+• Open Visual Studio Tools
+• Open Developer Cmd as Admin
+• Encrypting as
+• aspnet_regiis -pef "appSettings" "folder path of config file" -prov "<Provider Name>"
+
+- Encryption Providers
+• DataProtectionConfigurationProvider : Only one machine can encrypt and decrypt
+• RSA Provider : Digital certification is required.
+
+- Decrypting as
+• aspnet_regiis -pdf "appSettings" "folder path of config file"
+
+- Build automation is also required.
 ----------------------------------------------
-Status - Section 11 - Application Settings - completed
+Status - Section 11 - Securing Configuration Settings - completed
 
