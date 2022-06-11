@@ -199,6 +199,18 @@ $("#newRental").submit(function (e) {
 - In done method : validator.resetForm();
 
 - Code refactoring is required in OOP design.
+
+
+16. Summary
+- Understand the problem
+- Start with the backend
+- Think of the inputs and the output
+- Declare a simple API
+- Extend the domain model (if required)
+- Build the happy path
+- Add the details one by one
+- Move on to the front end
+
 ----------------------------------------------
-Status - Section 10 - Code review - completed
+Status - Section 10 - Summary - completed
 
