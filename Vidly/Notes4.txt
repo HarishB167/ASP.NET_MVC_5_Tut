@@ -126,6 +126,15 @@ $("#movies").append("<li>" + movie.name + "</li>");
 
 - Reducing width of list item
 • Create div around ul as : div.row>div.col-md-4.col-sm-4
+
+11. Filter the Records
+- In Api/CustomersController
+• add optional parameter to GetCustomers(string query = null)
+• Check for query for null
+• Apply filter using Where(c => c.Name.Contains(query))
+
+- In Api/MoviesController
+• Filter for name and availability.
 ----------------------------------------------
-Status - Section 10 - Improving the Look and Feel - completed
+Status - Section 10 - Filter the Records - completed
 
