@@ -149,6 +149,36 @@ $("#newRental").submit(function (e) {
      }).done(function() {console.log("done");})
      .fail(function() {});
 }
+
+13. Displaying Toast Notifications
+- Install toastr
+- Add it to bundle config : /content/toastr.css and /scripts/toastr.js
+- In post success : toastr.success("<msg>")
+- In post fail : toastr.error("<msg>")
+
+14. Implementing Client-side Validation
+- In @section scripts at beginning add
+• @Scripts.Render("~/bundles/jqueryval")
+
+- Add required to customer input
+
+- Custom validation :
+• $("#newRental").validate({
+    submitHandler : function() { code from submit function }
+});
+• Remove submit handler of form
+
+- Making text and input red
+• In site.css add
+• label.error {color: red;}
+• input.error {border: 2px solid red;}
+
+- Enforcing customer selection from list
+• Custom validator before validate method
+• $.validator.addMethod("validCustomer", function() {
+    return vm.customerId && vm.customerId !== 0;
+}, "<error message>");
+• Apply as : <input ... data-rule-validCustomer="true" ...
 ----------------------------------------------
-Status - Section 10 - Submitting the Form - completed
+Status - Section 10 - Implementing Client-side validation - completed
 
