@@ -319,7 +319,7 @@ Section 11 : Deployment
 • It irritates users
 • Gives scope for hackers
 
-- Adding customer error page
+- Adding custom error page
 • In Web.config under system.web add
 • <customErrors mode="On"></customErrors>
 • mode: RemoteOnly - custom error only for remote users.
@@ -339,7 +339,29 @@ Section 11 : Deployment
 • <httpErrors errorMode="Custom">
     <remove statusCode="404" />
     <error statusCode="404" path="404.html" responseMode="File" />
-</httpErrors
+</httpErrors>
+
+
+7. Logging Unhandled Exceptions
+- Install Elmah
+• install-package Elmah
+• Error Logging Modules and Handlers
+
+- Working
+• It plugs into request processing pipeline
+• If there is unhandled exception, it wraps its details and store it
+• Default storage - Memory, can be stored in database.
+
+- Viewing exception
+• domain/elmah.axd
+• Only accessible locally
+
+- Making available remotely
+• In Web.config
+• In location elment containing elmah.axd
+• Copy commented <authorization> element
+• Add it after httpHandlers
+• In allow tag change roles to users="admin@vidly.com, ..."
 ----------------------------------------------
-Status - Section 11 - Custom Error Pages - completed
+Status - Section 11 - Logging Unhandled Exceptions - completed
 
