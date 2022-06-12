@@ -25,16 +25,19 @@
 {
     <script>
         $(document).ready(function () {
+            var myURL = window.location.href;
+            var myDir = myURL.substring(0, myURL.lastIndexOf("/") + 1);
+
             var table = $("#customers").DataTable({
                 ajax: {
-                    url: "/api/customers",
+                    url: myDir + "api/customers",
                     dataSrc: ""
                 },
                 columns: [
                     {
                         data: "name",
                         render: function (data, type, customer) {
-                            return "<a href='/customers/edit/" + customer.id + "'>" + customer.name + "</a>";
+                            return "<a href='" + myDir + "customers/edit/" + customer.id + "'>" + customer.name + "</a>";
                         }
                     },
                     { data: "membershipType.name" },
@@ -53,7 +56,7 @@
                 bootbox.confirm("Are you sure you want to delete this customer?", function (result) {
                     if (result) {
                         $.ajax({
-                            url: "/api/customers/" + button.attr("data-customer-id"),
+                            url: myDir + "api/customers/" + button.attr("data-customer-id"),
                             method: "DELETE",
                             success: function () {
                                 table.row(button.parents("tr")).remove().draw();

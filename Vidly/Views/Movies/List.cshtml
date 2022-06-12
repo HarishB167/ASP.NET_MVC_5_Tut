@@ -24,16 +24,19 @@
 {
     <script>
         $(document).ready(function () {
+            var myURL = window.location.href;
+            var myDir = myURL.substring(0, myURL.lastIndexOf("/") + 1);
+
             var table = $("#movies").DataTable({
                 ajax: {
-                    url: "/api/movies",
+                    url: myDir + "api/movies",
                     dataSrc: "" // Specifying where data is nested in response.
                 },
                 columns: [
                      {
                          data: "name", // property of movies object
                          render: function (data, type, movie) {
-                             return "<a href='/movies/edit/" + movie.id + "'>" + movie.name + "</a>";
+                             return "<a href='" + myDir + "movies/edit/" + movie.id + "'>" + movie.name + "</a>";
                          }
                      },
                         { data: "genre.name" },
@@ -52,7 +55,7 @@
                 bootbox.confirm("Are you sure you want to delete this movie?", function (result) {
                     if (result) {
                         $.ajax({
-                            url: "/api/movies/" + button.attr("data-movie-id"),
+                            url: myDir + "api/movies/" + button.attr("data-movie-id"),
                             method: "DELETE",
                             success: function () {
                                 table.row(button.parents("tr")).remove().draw();

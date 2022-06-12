@@ -32,6 +32,10 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
+            var myURL = window.location.href;
+            var myDir = myURL.substring(0, myURL.lastIndexOf("/") + 0);
+            var myDir = myDir.substring(0, myDir.lastIndexOf("/") + 0);
+
             var vm = {
                 movieIds: []
             };
@@ -40,7 +44,7 @@
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
                 remote: {
-                    url: '/api/customers?query=%QUERY',
+                    url: myDir + '/api/customers?query=%QUERY',
                     wildcard: '%QUERY'
                 }
             });
@@ -62,7 +66,7 @@
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
                 remote: {
-                    url: '/api/movies?query=%QUERY',
+                    url: myDir + '/api/movies?query=%QUERY',
                     wildcard: '%QUERY'
                 }
             });
@@ -93,7 +97,7 @@
             var validator = $("#newRental").validate({
                 submitHandler: function () {
                     $.ajax({
-                        url: "/api/newRentals",
+                        url: myDir + "/api/newRentals",
                         method: "post",
                         data: vm
                     })

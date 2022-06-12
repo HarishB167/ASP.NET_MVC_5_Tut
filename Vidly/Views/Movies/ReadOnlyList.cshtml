@@ -21,9 +21,12 @@
 {
     <script>
         $(document).ready(function () {
+            var myURL = window.location.href;
+            var myDir = myURL.substring(0, myURL.lastIndexOf("/") + 1);
+
             var table = $("#movies").DataTable({
                 ajax: {
-                    url: "/api/movies",
+                    url: myDir + "api/movies",
                     dataSrc: "" // Specifying where data is nested in response.
                 },
                 columns: [
