@@ -362,6 +362,14 @@ Section 11 : Deployment
 • Copy commented <authorization> element
 • Add it after httpHandlers
 • In allow tag change roles to users="admin@vidly.com, ..."
+
+8. Final Touch
+- Tweaking styles of UI
+• Use developer tools, Elements tab
+• Change styles of elements such as 
+• Background color, color, padding, font-size etc.
+• Save all changes in new css bootstrap-theme.css
+- Color pallette generators can be used
 ----------------------------------------------
-Status - Section 11 - Logging Unhandled Exceptions - completed
+Status - Section 11 - Final Touch - completed
 
