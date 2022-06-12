@@ -312,6 +312,34 @@ Section 11 : Deployment
 • aspnet_regiis -pdf "appSettings" "folder path of config file"
 
 - Build automation is also required.
+
+
+6. Custom Error Pages
+- By default exception details are shown
+• It irritates users
+• Gives scope for hackers
+
+- Adding customer error page
+• In Web.config under system.web add
+• <customErrors mode="On"></customErrors>
+• mode: RemoteOnly - custom error only for remote users.
+
+- In FilterConfig, HandleErrorAttribute serves custom error page.
+• Only works for exception
+
+- For not found 404
+• For ASP.NET
+• In customErrors add child
+• <error statusCode="404" redirect="~/404.html" />
+• In project root create 404.html file as
+<h1>Not Found</h1>
+
+• For IIS
+• In system.webServer in Web.config add
+• <httpErrors errorMode="Custom">
+    <remove statusCode="404" />
+    <error statusCode="404" path="404.html" responseMode="File" />
+</httpErrors
 ----------------------------------------------
-Status - Section 11 - Securing Configuration Settings - completed
+Status - Section 11 - Custom Error Pages - completed
 
