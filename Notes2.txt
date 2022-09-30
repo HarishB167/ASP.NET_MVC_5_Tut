@@ -1,0 +1,460 @@
+Section 4 : Building Forms
+
+1. The Markup
+Add action to represent a form
+In CustomerController add action named New.
+Add it's view :
+title and <h2> to New Customer
+Render form :
+.BeginForm returns Disposable object, so
+using block makes </form> render on Dispose() call.
+.LabelFor(<lambda expression>) - specifying model's property used.
+.TextBoxFor - automatic supports validation from model, 2nd argument can be object to specify extra html properties.
+@using (Html.BeginForm("targetAction", "ControllerName"))
+{
+    <div class="form-group">
+          @Html.LabelFor(m => m.Name)
+          @Html.TextBoxFor(m => m.Name, new { @class = "form-control" } )
+    </div>
+}
+
+2. Form labels
+Changing labels : 2 options :
+1) Apply Data annotation in model as :
+[Display(Name = "Date of  Birth")]
+public DateTime? Birthdate {get; set;}
+It requires recompiling at every change
+2) Manually adding label as raw html
+<label for="Birthdate">Date of Birth</label>
+It requires adding for="" attribute to label
+Change of model properties is not updated in 'for' attribute.
+
+3. Drop-down Lists
+- In application db context add DbSet for membership types.
+public DbSet<MembershipType> MembershipTypes {get; set;}
+
+- Create a ViewModel for this action having Membership types and Customer having property as NewCustomerViewModel
+public IEnumerable<MembershipType> MembershipTypes {get; set;}
+public Customer Customer {get; set;}
+
+- In action method :
+Getting membership types from database
+var membershipTypes = _context.MembershipTypes.ToList();
+Using view model :
+var viewModel = new NewCustomerViewModel
+{ MembershipTypes = membershipTypes
+};
+
+- In view .cshtml file
+change @model ...NewCustomerViewModel
+Add select form group
+@Html.DropDownListFor(lambda function, 
+new SelectList(list of items, value property, display property),
+"Select membership type",
+new {@class = "form-control"})
+
+-  In Customer model
+Using Data annotation set display value of MembershipTypeId to Membership Type.
+
+4. Model Binding
+- Add button to form
+<button type="submit" class="btn btn-primary">Save</button>
+
+- Create action
+Apply [HttpPost] attribute - makes accept only Post request
+Action modifying data should not accept get request.
+Add parameter to action
+public ActionResult Create(NewCustomerViewModel viewModel)
+{
+    return View();
+}
+Model binding - ASP.NET automatically binds request data to the model parameter
+
+
+5. Saving Data
+- First add it to DbContext as :
+_context.Customers.Add(customer);
+It's not written to database, it is in memory.
+Changes are marked in DbContext.
+
+- To persist changes :
+_context.SaveChanges()
+It generates SQL statements based on all changes in DbContext
+and applies to database.
+They are wrapped around transaction (Either all will be persisted on no one will).
+
+- Redirect to List of customers
+return RedirectToAction("Index", "Customers");
+
+6. Edit Form
+- In ActionLink in Customes/Index.cshtml
+change action Details to Edit
+
+- Create Edit action
+Rename NewCustomerViewModel to CustomerFormViewModel
+Rename New.cshtml to CustomerForm.cshtml
+Same changes in New action also.
+public ActionResult Edit(int id)
+{
+var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+if (customer == null)
+    return HttpNotFound();
+var viewModel = new CustomerFormViewModel
+{
+Customer = customer,
+MembershipTypes = _context.MembershipTyeps.ToList()
+};
+return View("CustomerForm", viewModel);
+}
+
+- Fixing display of time component of birthdate
+In TextBoxFor in CustomerForm.cshtml
+Add format string at 2nd argument as :
+"{0:d MMM yyyy}"
+
+7. Updating Data
+- In CustomerForm rename action Create to Save.
+same rename in CustomersController.
+
+- Updating customer object values : 2 ways :
+1) TryUpdateModel(object) method :
+• It opens security holes : unauthorized updation of properties
+• Whitelisting creates magic strings.
+2) Manual set properties of object (Preffered way)
+customerInDb.Name = customer.Name; etc...
+
+- Changing Save action
+if (customer.Id == 0)
+    _context.Customers.Add(customer)
+else
+{
+    var customerInDb = _context.Customers.Single(c => c.Id == customer.Id);
+    customerInDb.Name = customer.Name;
+    customerInDb.Birthdate = customer.Birthdate;
+    customerInDb.MembershipTypeId = customer.MembershipTypeId;
+    customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
+}
+
+- As we relying on customer id
+Create id as hidden field before submit button in CustomerForm
+@Html.HiddenFor(m => m.Customer.Id)
+
+
+8. Troubleshooting Entity Validation Errors
+- DbEntityValidationException
+In Debug mode inspect variable e.
+try {
+_context.SaveChanges()
+catch (DbEntityValidationException e)
+{
+    Console.WriteLine(e);
+}
+-----------------------------------------------------------
+
+Section 5 : Implementing Validation
+
+1. Adding Validation
+- 3 steps
+1) Add data annotation on entities.
+2) Change program flow using ModelState.IsValid in action methods. Return same view if not valid, if valid then redirect.
+3) Add validation messages in Forms.
+• Add placeholder for validation messages next to each field.
+• @Html.ValidationMessageFor(m => m.Customer.Name)
+
+2. Styling Validation Form
+- Adding css styles in Content/Site.css
+• For validation text : .field-validation-error { color : red; }
+• For input : .input-validation-error { border : 2px solid red; }
+
+3. Data Annotations
+- Some data annotations
+• Required
+• StringLength(length)
+• Range(1,10) - on numeric properties
+• Compare("otherProperty")
+• Phone
+• EmailAddress
+• Url
+• RegularExpressions("...")
+
+- Custom validation Message
+[<DataAnnotation>(ErrorMessage = "message")]
+
+4. Custom Validation
+- Create a class in Model folder - e.g. Min18YearsIfAMember
+inherits from ValidationAttribute
+using System.ComponentModel.DataAnnotations
+
+- Override IsValid(object, ValidationContext) method
+Use validationContext to access containing class.
+var customer = (Customer)validationContext.ObjectInstance;
+Add Logic of validation.
+Return ValidationResult.Success for success.
+Return new ValidationResult("Error message") on failure.
+
+- Apply it to property of Model
+
+5. Refactoring Magic Numbers
+Magic numbers hurt maintainability of code.
+
+- Explicitly define numbers in domain model class as
+public static readonly <type> <varName> = <value>;
+
+- Replace magic numbers in validation class.
+
+- Another solution 
+• Enum : requires casting in validation class.
+
+6. Validation summary
+- Displaying errors on top of form
+At form beginning add
+@Html.ValidationSummary()
+
+- Fixing Id field validation error
+In New action of CustomersController
+In viewModel add "Customer = new Customer(),"
+
+- Displaying single error text
+Modfiy as : @Html.ValidationSummary(true, "error message")
+First arg is : exclude individual property errors
+
+- Better coding : Required fields may come first before optional fields.
+
+7. Client-side Validation
+- Benefits :
+• Immediate feedback
+• No waste of server resources
+
+- Enabling client-side validation
+In CustomerForm.cshtml add script section as :
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+- How it works
+• @Html helper methods adds addtional attributes.
+• Jquery checks inputs based on those attributes.
+• It only works with standard data annotatoin of .NET.
+• Custom Validation attribute (classes) requires writing jquery, and change of validation rules requires re-editing jquery.
+
+8. Anti-forgery Tokens
+- CSRF : Cross-site Request Forgery
+
+- ASP.NET compares token in hidden input field and cookie stored.
+
+- 2 Steps :
+• In CustomerForm.cshtml add before button
+@Html.AntiForgeryToken()
+• In CustomersController add attribute to Save action
+[ValidateAntiForgeryToken]
+
+9. Code review  - Preventing showing of default values in from
+- In New action remove "new Movie()" from viewModel
+
+- Create Pure View Model
+• Extract properties of Movie in MovieFormViewModel.
+• And make them nullable.
+• Also import System.ComponentModel.DataAnnotations.
+• Add [Required] attribute as required.
+• Change references in MovieForm.cshtml
+• Build constructor to accept Movie object.
+• Initialize properties in it.
+• Also create default constructor, with initializing "Id = 0".
+
+- In Edit and Save action in MoviesController 
+• Edit as "new MovieFormViewModel(movie)"
+-----------------------------------------------------------
+
+Section 6 : Building RESTful Services with ASP.NET Web API
+
+1. What is a Web API
+- Benefits
+• Less server resources (imporve scalability)
+• Less bandwidth (improve performance)
+• Support for a broad range of clients (Web, Mobile, Tablet etc.)
+
+- Called as Data Services or Web APIs
+
+- Frameworks - ASP.NET Web API (follows ASP.NET MVC)
+• It has - Routing, Controllers, Action, ActionResult etc.
+
+- In ASP.NET Core both are merged (MVC and Web API)
+
+2. RESTful Convention
+- REST : REpresentational State Transfer
+
+- API Endpoint : /api/customers
+• GET /api/customers - get all
+• GET /api/customers/1 - get one
+• POST /api/customers - add
+• PUT /api/customers/1 - edit one
+• DELETE /api/customers/1 - delete one
+
+3. Building an API
+- Add folder as Controllers/Api/
+- In Api folder add Controller
+• Using template : Web API 2 Controller - Empty
+• Name it CustomersController
+
+- Configure Web API
+• In Global.asax.cs in Application_Start method add :
+GlobalConfiguration.Configure(WebApiConfig.Register);
+using System.Web.Http;
+
+- CustomersController api class
+• Derives from ApiController
+• Add application context
+private ApplicationDbContext _context;
+• In constructor :  _context = new ApplicationDbContext();
+
+- Get all customers :
+public IEnumerable<Customer> GetCustomers()
+{ return _context.Customers.ToList(); }
+
+- Get single customer :
+public Customer GetCustomer(int id)
+{ var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+    if (customer == null)
+        throw new HttpResponseException(HttpStatusCode.NotFound);
+    return customer;
+}
+
+- Create a customer :
+• Apply HttpPost attribute
+[HttpPost]
+public Customer CreateCustomer(Customer customer)
+{ 
+    if (!ModelState.IsValid)
+        throw new HttpResponseException(HttpStatusCode.BadRequest);
+    _context.Customers.Add(customer);
+    _context.SaveChanges();
+    return customer;
+}
+
+- Edit a customer :
+• Apply HttpPut attribute
+[HttpPut]
+public void UpdateCustomer(int id, Customer customer)
+{
+    if (!ModelState.IsValid)
+        throw new HttpResponseException(HttpStatusCode.BadRequest);
+    var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);
+    if (customersInDb == null)
+        throw new HttpResponseException(HttpStatusCode.NotFound);
+    customerInDb.Name = customer.Name;
+    customerInDb.Birthdate = customer.Birthdate;
+    ...and all other properties...
+    _context.SaveChanges();
+}
+
+- Delete a customer : 
+• Apply HttpDelete attribute
+[HttpDelete]
+public void DeleteCustomer(int id)
+{
+    var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);
+    if (customersInDb == null)
+        throw new HttpResponseException(HttpStatusCode.NotFound);
+    _context.Customers.Remove(customerInDb);
+    _context.SaveChanges();
+}
+
+4. Testing an API
+- ASP.NET Api has media formatter
+XML (Default), JSON 
+- Need to specify Content-Type header for JSON
+- Using postman rest client shortcut to test
+
+5. Data Transfer Objects
+- Problem of using Domain Model in api
+• It is implementation detail
+• It can change frequently
+• Can break clients using api service.
+• Creates security holes in application.
+
+- DTO
+• used for stability, and less changes at client side.
+• plain data structure
+• transfer data between client and server.
+• Changing DTO is costly
+• Should plan strategy before changing DTOs (API versioning)
+• API should never receive/return domain objects.
+
+- Adding DTOs
+• Add folder "Dtos" in root
+• Create class CustomerDto in it.
+• Copy all properties of Customer model into CustomerDto
+• Any reference to Domain classes should be removed or create Dto classes for them also.
+• Remove [Display] attributes
+• In action methods return CustomerDto by mapping it from customer obj
+• In modifying/creating action methods map CustomerDto to customer obj.
+
+6. Auto Mapper
+- Install automapper using package manager console
+install-package automapper -version:4.1
+
+- Auto mapper
+• uses reflection to scan types
+• It finds their properties
+• Maps props based on their names.
+• So, convention based mapping tool.
+
+- Create mapping profile
+• How different object types are mapped
+• In App_Start/ add class MappingProfile
+• It derives from Profile (using AutoMapper;)
+• In its constructor add
+Mapper.CreateMap<Customer, CustomerDto>();
+Mapper.CreateMap<CustomerDto, Customer>();
+• Loading at application start
+In Global.asax.cs in Application_Start method add
+Mapper.Initialize(c => c.AddProfile<MappingProfile>());
+using AutoMapper; using Vidly.App_Start;
+
+- Using mapping in controller
+• Change return type to CustomerDto
+• Map customer to dto :
+1) Getall - _context.Customers.ToList().Select(Mapper.Map<Customer, CustomerDto>);
+2) Get one - Mapper.Map<Customer, CustomerDto>(customer);
+3) Post - var customer = Mapper.Map<CustomerDto, Customer>(customerDto);
+_context.Customers.Add(customer);
+customerDto.Id = customer.Id;
+4) Update - Mapper.Map<CustomerDto, Customer>(customerDto, customerInDb); and remove following assignment statements.
+
+7. Using Camel Notation
+- Making key names of api response camel case
+• In Register method of App_Start/WebApiConfig.cs add
+• var settings = config.Formatters.JsonFormatter.SerializerSettings;
+• settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+• settings.Formatting = Formatting.Indented;
+
+8. IHttpActionResult
+- Currently Post request response with 200 instead of 201
+- So return IHttpActionResult in ALL api actions.
+- Api Controller has helper methods that create classes implementing IHttpActionResult.
+- Using it :
+1) Bad request - BadRequest()
+2) Not found - NotFound()
+3) Get one customer - Ok(old return object);
+4) Post - Created(new Uri(Request.RequestUri + "/" + customer.Id), customerDto);
+
+- Descriptions
+• Uri is defined in System namespace
+• Request.RequestUri -> gets uri of the request
+
+- In CustomerDto
+• Remove Min18YearsIfAMember attribute
+• It uses Customer model object instead of CustomerDto.
+• There should be only 1 way to create object.
+
+9. Exercise
+- Avoid setting of id property in update method in auto mapper
+• In MappingProfile change as :
+• CreateMap<MovieDto, Movie>().ForMember(m => m.Id, opt => opt.Ignore());
+• CreateMap<CustomerDto, Customer>().ForMember(c => c.Id, opt => opt.Ignore());
+----------------------------------------------
+Status - Section 6 - Exercise - completed
+
+
+
