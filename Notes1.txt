@@ -1,0 +1,411 @@
+Section 1 : Getting Started
+
+1. MVC Architectural Pattern
+Model, View, Controller (& Router)
+For implementing user interfaces
+Originally developed for desktop applications (in 1970)
+Widely adopted in web.
+Frameworks following MVC pattern : 
+ASP.NET MVC, Ruby on Rails, Express
+
+- Model
+Application data and behaviour in given domain
+Independent of UI
+Example of Domain Model : Movie, Customer, Rental, Transaction
+Plain Old CLR Objects (POCOs)
+
+- View
+HTML markup displayed to user.
+
+- Controller
+HTTP request handler.
+
+- Router
+Selecting right action of right controller for a request.
+
+- Benefits of MVC
+Better separation of concerns
+More maintainable applications
+
+2. Setting up Development Environment
+Visual Studio >2013
+Plugins : Tools > Extension and Updates > Online
+Visual Studio Productivity Power Tools,
+Web essentials
+
+3. First ASP.NET MVC App
+- Creating
+File > New > Project > Web > ASP.NET Web Application
+Give name to application and tick add to source control
+Select MVC template
+Untick Host in the cloud
+
+- Solution Explorer
+App_Data - Database files stored
+App_Start - Class files called when application starts
+ • RouteConfig.cs - Configuration of routing rules.
+    we see route name is Default, 
+    with url pattern "{controller}/{action}/{id}"
+    Example :
+    if url is /movies/popular, then Popular() method of MoviesController is called.
+    if url is /movies/edit/1, then Edit(1) method of MoviesController is called.
+    defaults value in route : 
+         if url don't have pattern then Home will be called
+         if url only have controller then Index action of that controller will be called
+         and id is optional parameter.
+Content - storing css, images and other client side assets.
+Controllers - Has 3 default controllers
+ • AccountController.cs - actions for sign up, login, logout
+ • HomeController.cs - home page
+ • ManageController.cs - actions for user profile - changing password, enabling 2 factor auth, social logins
+fonts - 
+Models - storing domain classes.
+Scripts - storing javascript files
+Views - It has folders named after controllers' name
+ • one more folder names Shared - views shared b/w controllers
+ • When we use a view in controller ASP.NET will look in same named folder.
+Global.asax - a class that provides hooks for events in application lifecycle.
+ • Application_Start method is called on Application start.
+ • Routes are registered in this method
+packages.config - used by NuGet package manager, for dependency management.
+Startup.cs - Future replacement of Global.asax
+Web.config - XML having application configuration
+ • connectionStrings element - specifying database connection strings
+ • appSettings element - define configuration setting for application
+
+
+4. MVC in Action
+
+- Creating Model
+In solution explorer 
+Right click Models > Add > Class
+Add property fields to classes.
+This created class is POCO (Plain old clr object)
+Having state and behaviour in its problem domain.
+
+- Creating controller with action
+In solution explorer
+Right click Controller > Add > Controller
+Select MVC 5 Controller - Empty
+Created class derives from Controller class
+Having default action Index() returns ActionResult
+Now use model here.
+Rendering model : In action return View(<modelInstance>)
+
+- Creating Views
+In Views folder in solution explorer
+Right click <ModelName> > Add > View
+Give name to view
+Untick partial view 
+(Partial view - Incomplete page or a Widget)
+Use a layout page : Views/Shared/_Layout.cshtml
+
+- .cshtml file
+Mixture of C# code and html
+C# code is prefixed with @ sign
+In first block @{ }
+ViewBag.Title sets title of page
+Layout sets layout of page
+Specifying type of model :
+Add directive
+@model Vidly.Models.Movie
+
+- Running : Ctrl + F5
+Takes to current view
+
+
+5. Adding a Theme
+ASP.NET MVC frontend uses Bootstrap css framework
+
+- At bootswatch.com use Theme Lumen
+Under lumen select bootstrap.css
+Save it in Content folder as bootstrap-lumen.css
+
+- Replace reference
+In App_Start/BundleConfig.cs
+Here we define bundles for client side assets
+Compress/combine multiple js and css files.
+Default bundles :
+~/bundles/jquery -> jquery scripts
+~/bundles/jqueryval -> validation scripts
+~/bundles/modernizr -> modernizer : TODO
+~/bundles/bootstrap -> bootstrap.js
+~/Content/css -> bootstrap.css, site.css (generic style for application)
+In /Content/css change bootstrap to bootstrap-lumen.
+Recompilation of code is required.
+-----------------------------------------------------------
+
+Section 2 : ASP.NET MVC Fundamentals
+
+1. Action Results
+ActionResult is base class for all action results.
+Output to actions
+
+- View method 
+Helper method from Controller parent.
+Quick creation of ViewResult.
+
+- Good practice
+Set return type to ViewResult (child of ActionResult)
+When action have different action results, then use ActionResult return type.
+
+- Types of ActionResults and Helper Methods
+1) ViewResult - View()
+2) PartialViewResult - PartialView()
+3) ContentResult - Content("Text") - return simple text
+4) RedirectResult - Redirect() - redirect to url
+5) RedirectToRouteResult - RedirectToAction() - redirect to action
+   RedirectToAction("ActionName", "ControllerName",
+           new {key value pairs})
+6) JsonResult - Json() - return serialized json object
+7) FileResult - File() - return file
+8) HttpNotFoundResult - HttpNotFound() - return 404
+9) EmptyResult - return void or nothing
+
+
+2. Action Parameters
+Input for actions
+ASP.NET MVC automatically maps request data to parameter values
+
+- Parameter sources : id param is defined in Default route
+In URL : /movies/edit/1
+query string : /movies/edit/?id=1
+Post data : id=1
+
+- Making parameter optional
+Making parameter nullable
+For value types append ? to type declaration : int? someVar
+
+3. Convention-based Routes
+- Creating Custom route
+In App_Start/RouteConfig.cs
+before default route add
+routes.MapRoute(name, urlPattern, defaultObject, constraintObject)
+routes.MapRoute("<Name>",
+         "movies/released/{year}/{month}",
+         new {controller = "Movies", action = "ByReleaseDate"},
+         new { year = @"\d{4}", month = @"\d{2}" });
+
+4. Attribute Routing
+Added in on ASP.NET MVC 5
+- Issues of Old way
+a - RouteConfig will become a mess
+b - Continuous switching between actions and routes
+c - Change of action name requires change in respective route
+
+- Creating route by adding attribute to action method
+First enable attribute routing in App_Start/RouteConfig
+add : routes.MapMvcAttributeRoutes();
+Before action method add
+[Route("movies/released/{year}/{month:regex(\\d{2}):range(1, 12)")]
+
+- Other constraints :
+min, max, minlength, maxlength, int, float, guid.
+
+5. Passing Data to Views
+- Ways to pass data to views
+1) Passing model as argument to view method
+In controller - return View(movie);
+In view file - @using Vidly.Models
+                      @Model.Name
+2) Use ViewData dictionary :
+In controller - ViewData["Move"] = movie;
+In view file - @( (Movie)ViewData["Movie"]).Name )
+3) Use ViewBag magic property
+In controller - ViewBag.Movie = movie;
+In view file - @ViewBag.Movie
+
+- 2nd and 3rd way have problems like Magic string
+- Use only 1st way
+- View() method internally assigns ViewData.Model property to passed model.
+
+6. View Models
+ViewModel is a model specifically build for a View.
+Includes data and rules specific to view.
+
+- Create View Models
+Create new folder in project - ViewModels
+Add new class - <Action><Controller>ViewModel.cs
+Add properties to it.
+
+- Pass instance of this ViewModel to View() method
+Change same in view's .cshtml file
+
+7. Razor views
+ASP.NET uses Razor view engine
+- if block
+@if (...)
+{
+    <div>sometext</div>
+}
+
+- for block
+@foreach (var item in list)
+{
+    <div>@item.Name</div>
+}
+
+- Comments
+@*
+Mutliline comment
+*@
+
+
+8. Partial Views
+Reusable views in other views
+For breaking down large views
+
+- Creating Partial Views
+Right click Views/Shared > Add > View
+Name - _<PartialViewName>
+Tick - Create as partial view
+Write code
+
+- Adding partial view to a view
+@Html.Partial("<PartialViewName>", [optionally model])
+Model is automatically passed to partial views
+-----------------------------------------------------------
+
+Section 3 : Working with Data
+
+1. Entity Framework
+It is an ORM (object relational mapper)
+
+- DbContext class
+Provided by Entity framework
+Gateway to database
+A DbContext has >=1 DbSet (tables)
+
+- LINQ
+Use LINQ to query DbSet
+Entity framework translates to SQL queries at runtime
+Entity framework tracks changes in DbSet : Add, Modify, Delete
+Persisting command applies those changes to database.
+
+- Workflows types
+Database first, Code first
+
+2. Database first vs Code first
+- Database first
+Generate Database tables > Entity framework generates Domain classes
+
+- Code first
+Create Domain classes > Entity framework generates database tables
+Increased productivity
+Full versioning of database
+Much easier to build an integration test db
+
+
+3. Code-first Migrations
+- Open Package manager console
+Tools > NuGet Package manager > package manager console
+
+- First time - enable migration : enable-migrations
+Migrations folder is created in project
+
+- Creating first migration
+add-migration <NameForMigration>
+
+- Inside migration file
+CreateTable method call
+Tables created for ASP.NET Identity to control Authen and Authorize:
+dbo.AspNetRoles, dbo.AspNetUserRoles, dbo.AspNetUsers, etc.
+
+- Models/IdentityModels.cs
+Classes :
+ApplicationUser,
+ApplicationDbContext derives from IdentityDbContext(part of ASP.NET identity framework)
+
+- On executing add-migration
+Entity framework looked at DbContext
+It discovers DbSets defined in IndentityDbContext
+
+- Referencing models in DbContext to create their migration
+In IdentityModel -> ApplicationDbContext add DbSet as
+public DbSet<MyModel> MyModels { get; set; }
+
+- Recreating migration
+add-migration AlreadyCreatedMigrationName  -force
+
+- Running migration
+In package manager console
+update-database
+
+
+4. Changing the Model
+Aim for small migrations
+Treat migrations like GIT commits
+Every entity (model) must have a key which will be primary key :
+Id or <ModelName>Id
+
+- Navigation Property
+Refering another model in a model.
+It allows navigating to another type.
+To load object with it's related objects.
+
+- To not load related objects.
+Add foriegn key as :
+public <numberType> <ReferedClass>Id { get; set; }
+
+
+5. Seeding the Database
+For consistency in prepopulating part of database for dev, test and prod databases.
+In code-first only by using migration.
+Entity framework can generate a SQL script from all migrations to apply on production database.
+Also from last few migrations for existing database.
+
+- Creating empty migration
+add-migration <MigrationName>
+
+- In Up method in empty migration file
+Add Sql("SQL statement to execute");
+
+
+6. Overriding Conventions
+- Apply Data Annotations above property declaration in Model classes
+using System.ComponentModel.DataAnnotations;
+[Required] - not null
+[StringLength(255)] - set length of string
+Create new migration and run it.
+
+7. Querying Objects
+- Add DbContext to Controller
+In CustomersController add
+private ApplicationDbContext _context;
+
+- Initialize it in constructor
+public CustomerController()
+{ _context = new ApplicationDbContext(); }
+
+- DbContext needs to be disposed in controller's Dispose method
+protected override void Dispose(bool disposing) 
+{ _context.Dispose(); }
+
+- In actions use DbContext as
+var customers = _context.Customers; // Gets all customers
+
+- Deferred execution
+query is executed on : iteration, conversion to list.
+
+
+8. Eager Loading
+By default related objects are not loaded
+
+- In controller
+using System.Data.Entity;
+use include method as :
+_context.Customers.Include(c => c.MembershipType)
+
+9. Adding custom shortcut - opening Package manager console
+Tools > Options > Environment > Keyboard
+In Show commands containing:
+type packagemanagerconsole
+In Press shortcut keys : press shortcut combination.e.g. Alt+/, Alt+.
+
+----------------------------------------------
+Status - Section 3 - Adding custom shortcut - completed
+
+
+
+
+
