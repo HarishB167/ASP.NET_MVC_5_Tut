@@ -1,0 +1,410 @@
+Section 7 : Client-side Development
+
+1. Calling an API using jQuery
+- Adding delete link in Customers list
+• In View/Customers/Index.cshtml
+• Give table id = "customers"
+• Add th of Delete
+• Add td with button as :
+<button data-customer-id="@customer.Id" class="btn-link js-delete">Delete</button>
+• At bottom of file add :
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#customers .js-delete").on("click", function() {
+                 var button = $(this);
+                 if (confirm("Are you sure you want to delete this customer?")) {
+                      $.ajax({
+                            url: "/api/customers/" + button.attr("data-customer-id"),
+                            method: "DELETE",
+                            success: function () {
+                                 button.parents("tr").remove();
+                            }
+                       });
+                  }
+            });
+        });
+    </script>
+}
+
+
+2. Bootbox Plug-in
+- Replacing native js confirmation box with bootstrap dialog box
+• Using library Bootbox (abstraction over bootstrap)
+
+- Adding Bootbox to project
+• In package manager console
+• install-package bootbox -version:4.3.0
+
+- Adding reference to Bootbox.js in bundle
+• In App_Start/BundleConfig.cs
+• In "~bundles/bootstrap", add "~/Scripts/bootbox.js"
+• Minification happens on compilation of application release.
+
+- In Views/Customers/Index.cshtml replace as :
+bootbox.confirm("Are you sure you want to delete this customer?", function (result) {
+    if (result) {
+        ...delete ajax code here...
+    }
+});
+
+3. Optimizing jQuery Code
+- Each delete button has handler function in memory
+$("#customers .js-delete").on(...);
+
+- Only 1 function in memory - associating function to table and filtering it in function
+$("#customers").on("click", ".js-delete", ...);
+
+
+4. DataTables Plug-in
+- Adding Pagination, Sorting and Filtering
+- DataTables makes list of customers (json in memory) from Dom elements.
+
+- Install DataTables as
+• install-package jquery.datatables -version:1.10.11
+
+- In App_Start/BundleConfig.cs
+• Consolidate bundles combine jquery and bootstrap as :
+1) In Views/Shared/_Layout.cshtml
+consolidate jquery and bootstrap to "lib"
+2) In BundleConfig.cs rename "jquery" to "lib".
+3) And append scripts of bootstrap bundle to this "lib" bundle.
+4) Remove bootstrap bundle.
+• In lib bundle add DataTable scripts
+1) "~/Scripts/datatables/jquery.datatables.js"
+2) "~/Scripts/datatables/datatables.bootstrap.js"
+• Add DataTable stylesheet to css bundle :
+"~/Content/datatables/css/datatables.bootstrap.css"
+
+- In jquery in Views/Customers/Index.cshtml
+At beginning of ready function add
+$("#customers").DataTable();
+
+5. DataTables with Ajax Source
+- Using api as source of data
+• Add configuration object arg to DataTable()
+• {
+    ajax : {
+        url: "/api/customers",
+        dataSrc: "" // Specifying where data is nested in response.
+    },
+    columns: [
+         { data: "name", // property of customer object
+            render : function (data, type, customer) {
+                return "<a href='/customers/edit/" + customer.id + "'>" + customer.name + "</a>"; }
+          },
+            { data: "name"},
+            { data: "id", render: function(data) {
+              return "<button class='btn-link js-delete' data-customer-id="
+                   + data + ">Delete</button>"; }
+          }
+    ]
+}
+• Remove foreach block in table.
+• Remove if else condition.
+• In Index action of CustomersController
+• Remove return of list of customers.
+
+
+6. Returning Hierarchial Data
+• In CustomersController in GetCustomers eager load MembershipType
+• Create MembershipTypeDto with fields byte Id and string Name.
+• In CustomerDto
+• Add MembershipTypeDto field
+• In MappingProfile add : <MembershipType, MembershipTypeDto>
+• In Index.cshtml change 2nd column to "membershipType.name"
+
+7. DataTables - Removing Records
+- Take reference of DataTable at beginning as
+var table = $("#customers").DataTable(...);
+- Change success key function of ajax call as :
+table.row(button.parents("tr")).remove().draw().
+
+8. DataTables - Discussion Points
+- For large records
+• Implement searching, sorting and pagination at server
+• In DataTable enable server side processing
+- Code refactoring in jQuery code
+
+9. Single Page Applications
+- Views are generated on client
+- No use of MVC Razor views
+- Ajax call is made to api to get data and part of view is updated.
+- Benefits : Faster, Smoother
+- Client frameworks : Angular 2, Backbone, Ember
+-----------------------------------------------------------
+
+Section 8 : Authentication and Authorization
+
+1. Authentication Options
+- No Authentication
+- Individual User Accounts : Default, Internet websites, social login can be used.
+- Organizational Accounts : To enable single sign on for internal and cloud apps using active directory
+- Windows Authentication : For intranet applications
+
+2. ASP.NET Identity
+- Registration feature works using framewrok ASP.NET Identity
+- Previously called ASP.NET Membership
+- Architecture
+• Domain classes : IdentityUser, Role
+• API / Service : UserManager, RoleManager, SignInManager
+• Persistence store : UserStore, RoleStore
+
+- Persistence store 
+• These are classes which internally communicates to Domain and API classes.
+• Implemented by ASP.NET Identity using Entity Framework and Relational SQL Database.
+• Custom implemenation possible using No-sql database.
+
+- Automatically generated tables at first migration
+• AspNetRoles, AspNetUserRoles, AspNetUsers
+• Generated based on domain model of ASP.NET Identity framework.
+
+- In Models/IdentityModels.cs
+• ApplicationUser derives from IdentityUser
+• ApplicationDbContext derives from IdentityDbContext
+• Both parents are part of ASP.NET Identity framework
+
+- In Contollers/AccountController.cs
+• Exposes actions : Register, Login, Logoff
+• Register : 2 actions
+1) Loading registration form
+2) When form is posted
+
+- User registration process
+• ModelState validity checked
+• New ApplicationUser is created
+• UserManger.CreateAsync(...) is called
+• If successful SignInManager is used to sign in.
+
+3. Restricting Access
+- Attribute / Filter : [Authorize]
+• Applied to action, controller or globally(preferred)
+• Applied on action : attribute will check login status, then action will be executed.
+
+- Globally applying [Authorize]
+• In App_Start/FilterConfig.cs
+• Register global filter as :
+• filters.Add(new AuthorizeAttribute());
+
+- Make a page annonymous accessible
+• Apply [AllowAnonymous] to actions or controllers.
+
+4. Seeding Users and Roles
+- Creating roles
+
+- Register Guest user
+• In register page register guest user
+
+- Register Admin user
+• In Controllers/AccountController.cs in Register method
+• Temporarily modify logic to any new user to have store manager role.
+• After user creation is successful
+var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
+var roleManager = new RoleManager<IdentityRole>(roleStore);
+await roleManager.CreateAsync(new IdentityRole("CanManageMovies"));
+await UserManager.AddToRoleAsync(user.Id, "CanManageMovies");
+• In register page register admin user
+• Remove all temporary 4 lines.
+
+- Deploying users and roles with application
+• Create emtpy migration SeedUsers
+• In solution explorer click show all files.
+• open database in App_Data/<database>
+• Right click AspNetUsers > Show Table Data
+• Select both users > Right click > Script
+• Copy this script to migration file in Sql(@"<sql code>")
+• Same for AspNetRoles and AspNetUserRoles
+• Remove all records from these 3 tables
+• Run the migration
+
+- We don't use Update-Database on Production database.
+
+
+5. Working with Roles
+- Restrict add, edit and delete to store managers : 2 ways
+1) Simple view - Show/Hide elements using priviledges
+2) Complex view - New view for less priviledges
+
+- In actions of Controller
+• Conditionally render using - User.IsInRole("CanManageMovies")
+
+- Making action callable by particular role
+• Apply Attribute
+[Authorize(Roles = "CanManageMovies, otherRole,...")]
+• Apply this on other attribute to other actions
+
+- Fixing magic string of role name
+• Create new STATIC class in Models folder - RoleName
+• add : public const string CanManageMovies = "CanManageMovies";
+• Replace all references.
+
+ 6. Adding Profile Data
+- Changing register form
+- Adding Driving license field
+• In Models/IdentityModels.cs in ApplicationUser add
+• prop DrivingLicense: Required, StringLength(255)
+• Create migration : AddDrivingLicenseToApplicationUser
+• Run migration : existing user's license is set to empty string
+
+- In Models/AccountViewModels.cs in RegisterViewModel class
+• Add property of driving license
+• attribute : Required, Display(Name=)
+
+- In Views/Account/Register.cshtml
+• Add form group for driving license
+
+- In Controllers/AccountController.cs in Register action
+• Add as -> new ApplicationUser{..., DrivingLicense = model.DrivingLicense}
+
+7. OAuth
+- Open Authorisation
+- Working :
+• Register Vidly to Facebook
+• Facebook gives apiKey and secret
+• John logins using facebook
+• Redirects to Facebook with key and secret using HTTPS
+• John logins into facebook
+• John gives permission to access information
+• Facebook redirects to Vidly with authorization token
+• Vidly sends auth token, key and secret for confirmation
+• Facebook gives access token to Vidly.
+
+- Using Social Logins :
+• Enable SSL
+• Register app with Facebook.
+
+8. Social Logins
+- Enable SSL
+• In Solution Explorer select project > Press F4
+• SSL Enables : True
+• Copy SSL URL
+• Right click project > Properties
+• In Web > Project Url > replace with copied url
+• Trust dummy genrated Certificate and install
+
+- Making HTTP inaccessible
+• In App_Start/FilterConfig add
+• filters.Add(new RequireHttpsAttribute());
+
+- Register application with facebook
+• developers.facebook.com
+• My apps > Add a New App > Website
+• Type app name > Create new facebook App ID
+• Put email, category
+• Put url of vidly app : localhost:port
+• Skip to developer dashboard
+• Copy app id and app secret
+
+- In App_Start/StartupAuth
+• Uncomment app.UseFacebookAuthentication
+• Paste app id and app secret
+
+- Adding driver license to social login form
+• In Views/Account/ExternalLoginConfirmation.cshtml
+• Add form group for driving license
+• In Models/AccountViewModels in ExternalLoginConfirmationViewModel class
+• add property for DrivingLicense with Required, Display
+• In Controllers/AccountController in ExternalLoginConfirmation action
+• change as -> new ApplicationUser {..., DrivingLicense = model.DrivingLicense};
+-----------------------------------------------------------
+
+Section 9 : Performance Optimization
+
+1. Overview
+- Premature optimization is the root of all evils.
+• Profile first, then optimize.
+
+- 3-tier Architecture
+• Tier - where code runs - Data, Application, Client
+
+- Performance optimization
+• Data Tier - More Gain 
+• Application - Moderate Gain
+• Client Tier - Less Observable Gain
+
+2. Data Tier
+- Causes : Schema, Queries
+
+- Schema Issues : Primiary keys, Relationships, Indexes
+- Schema related : Entity-Attribute-Value (EAV)
+- Probles of EAV Pattern
+• No ORMs
+• Long queries
+• Extremely slow
+
+- Queries
+• Keep an eye on queries run by Entity Framework
+• Use stored procedure as required and calling from ApplicationDbContext.
+
+- Optimizing Queries
+• Use Execution Plan in SQL Server
+• Create a "read" database (look up CQRS(Comman query responsibility segregation))
+• Use caching
+
+3. Glimpse
+- Installing
+• install-package glimpse.mvc5
+• install-package glimpse.ef6
+
+- Go to domain/glimpse.axd and Turn on glimpse
+
+- Working
+• Glimpse puts cookie on machine
+• This cookie is sent and fort b/w requests
+• Glimpse renders diagnostics on finding that cookie.
+
+- Uses
+• What queries are run on DB
+• How many queries
+• Queries execution time
+
+- Job Interview question : N + 1 issue
+
+4. Application Tier - Output Cache
+- Enable caching using attribute [OutputCache]
+• On actions, Controllers
+
+- Parameters of OutputCache
+• Duration : time in seconds
+• Location : OutputCacheLocation.server or client
+• VaryByParam : Different cache for different action params
+
+- Disabling caching of browsers
+• Use [OutputCache(Duration=0, VaryByParam="*", NoStore=true)]
+
+
+5. Data Caching
+- Only after Performance Profiling
+- Cons : Increase memory consumption, Makes complex
+- Use it for only actions of displaying data
+- Using as :
+• Import System.Runtime.Caching
+• Store and retrieve from MemoryCache.Default["<keyName>"]
+• Casting on retrieving : ... as IEnumerable<Genre>;
+
+6. Async
+- Improves scalability, when not using single instance SQL server.
+
+7. Release Builds : Produces application without debugging code.
+
+8. Disabling Session
+- What : web server memory allocated to each user.
+- More users means more memory required.
+- Reduces scalability.
+- Session are not used these days.
+- Application should be stateless : Not storing state of a request.
+- Disabling session
+* In solution explorer Web.config
+* In <system.web> add
+* <sessionState mode="Off"></sessionState> 
+
+9. Client Tier
+- Reduce requests count and response size 
+- Keep DTOs, js, css, images ligthweight
+- ASP.NET automatically makes bundles in release build using Web.Release.config
+----------------------------------------------
+Status - Section 9 - Client Tier - completed
+
+
+
