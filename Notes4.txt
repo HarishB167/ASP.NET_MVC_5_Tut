@@ -1,0 +1,376 @@
+Section 10 : Building a Feature End-to-End Systematically
+
+1. Understanding the Problem
+- Ask questions for use case
+• Add the ability to record rentals
+
+- Approach : Frontend, Back-end
+• Start from backend then go to front-end
+• To avoid over engineering
+• Focus on input/output of application
+
+- Use Case : New Rental
+- Input : Customer and Movies
+- Output : No output
+
+- Action : MVC Controller or API Controller
+
+2. Create API
+- create controller, api action and Dto
+
+3. Domain Modelling
+- Create associative model b/w Customer and Movie
+- Rental : has properties - DateRented, DateReturned, Customer, Movie, Id
+- Add model to ApplicationDbContext
+- Do code first migration
+
+4. Building the Simplest API
+- Implement happy path of CreateNewRentals action
+- Get customer
+- Get movies using Where and Contains method as : 
+var movies = ....Where(m => newRental.MovieIds.Contains(m.Id))
+
+5. Adding the Details - Update availability of movies
+- Add property NumberAvailable to Movies
+- Change action CreateNewRentals to decrement same
+- In MoviesControllers in CreateMovie setting same.
+
+6. Edge Cases
+- Defensive : for public apis, lots of validation required.
+- Optimistic : for private apis, used by frontend.
+- Cases : 
+• CustomerId is invalid
+• No MovieIds
+• One of more MovieIds are invalid
+• One of more movies are not available
+
+7. Building the Front-end - Using AJAX
+- Add mvc5 controller - RentalsController
+- Add action New
+- Create a view New.cshtml
+- Title = New Rental Form
+- Layout is set automatically from _ViewStart and can be removed.
+- Add form without action using raw html
+- Inside add input for Customer and Movies
+• div.form-group>label+input[type='text'].form-control
+- Add submit button.btn.btn-primary
+- Add link to _NavBar.cshtml
+
+8. Adding Auto-completion
+- install Typeahead jquery plugin
+• install-package Twitter.Typeahead
+
+- In BundleConfig in bundels/lib add 
+scripts/typeahead.bundle.js
+
+- Getting css
+• search typeahead .js
+• go to examples page
+• Copy css from page's source
+from : .typehead {background-color} to .tt-suggestion p {...}
+• Create typeahead.css in Content folder
+• Paste there
+• In BundleConfig add css bundle
+
+- Using plugin
+• in examples page > click Remote
+• Copy javascript of input
+• In New.cshtml of Rental add
+@section scripts
+{
+<script>$(document).ready(function() { <Paste here> });</script>
+}
+• Rename bestPictures to customers
+• datumTokenizer :
+References function taking a datum and transforming to string tokens. Rename value to name.
+• queryTokenizer : function transforms query into tokens
+• prefetch key : provides data on initialization, preventing additional requests. Remove it.
+• remote : change url to /api/customers?query=%QUERY
+• In reference to textbox change 'remote .typhead' to 'customer'
+• Assign this id 'customer' to textbox
+• .typhead method :
+firstarg : {minLength : 3, highlight : true }
+secondarg : { name: 'customers', display: 'name', source: customers }
+• On selection : .typeahead(...).on("typeahead:select", function (e, customer) { vm.customerId = customer.id;}), also declare vm object before.
+
+- Error of not rendering of movies autocomplete
+• add limit:50 before name:'movies'
+
+
+9. Updating the DOM
+- Adding movie to list
+• Add ul before button as : ul#movies.list-group
+• In callback function : append li with movie name as
+$("#movies").append("<li>" + movie.name + "</li>");
+
+- Clear the movie text box : $("#movie").typeahead("val","");
+
+- Store in view model : 
+• Add movieIds empty array to vm
+• Then add vm.movieIds.push(movie.id);
+
+- For complex structure use frontend frameworks
+
+10. Improving the Look and Feel
+- Inline text boxes
+• typeahead wraps input text box with another div as relative positioned.
+• Create div around input text box with class tt-container
+• In typeahead.css add class as
+.tt-container { position:relative; }
+
+- Movies list with bullet points
+• In js code in <li> add class='list-group-item'
+
+- Reducing width of list item
+• Create div around ul as : div.row>div.col-md-4.col-sm-4
+
+11. Filter the Records
+- In Api/CustomersController
+• add optional parameter to GetCustomers(string query = null)
+• Check for query for null
+• Apply filter using Where(c => c.Name.Contains(query))
+
+- In Api/MoviesController
+• Filter for name and availability.
+
+12. Submitting the Form
+- Clear records in Rentals table in database
+- Add id newRental to form
+- In js code handle submit event as
+$("#newRental").submit(function (e) {
+    e.preventDefault();
+    $.ajax({
+       url: "/api/newRentals",
+       method: "post",
+       data: vm
+     }).done(function() {console.log("done");})
+     .fail(function() {});
+}
+
+13. Displaying Toast Notifications
+- Install toastr
+- Add it to bundle config : /content/toastr.css and /scripts/toastr.js
+- In post success : toastr.success("<msg>")
+- In post fail : toastr.error("<msg>")
+
+14. Implementing Client-side Validation
+- In @section scripts at beginning add
+• @Scripts.Render("~/bundles/jqueryval")
+
+- Add required to customer input
+
+- Custom validation :
+• $("#newRental").validate({
+    submitHandler : function() { code from submit function }
+});
+• Remove submit handler of form
+
+- Making text and input red
+• In site.css add
+• label.error {color: red;}
+• input.error {border: 2px solid red;}
+
+- Enforcing customer selection from list
+• Custom validator before validate method
+• $.validator.addMethod("validCustomer", function() {
+    return vm.customerId && vm.customerId !== 0;
+}, "<error message>");
+• Apply as : <input ... data-rule-validCustomer="true" ...
+
+15. Code review
+- Preventing form submit
+• Remove e.preventDefault() from validate
+• return false in submitHandler function
+
+- Validation message issue
+• Assign name attributes to input fields for customer and movie
+
+- Clearing form on success in done() method
+• $("#customer").typeahead("val","");
+• $("#movie").typeahead("val","");
+• $("#movies").empty();
+• vm = { movieIds: [] };
+
+- Reset form validation state
+- Assign validate method result to validator
+- In done method : validator.resetForm();
+
+- Code refactoring is required in OOP design.
+
+
+16. Summary
+- Understand the problem
+- Start with the backend
+- Think of the inputs and the output
+- Declare a simple API
+- Extend the domain model (if required)
+- Build the happy path
+- Add the details one by one
+- Move on to the front end
+
+-----------------------------------------------------------
+
+Section 11 : Deployment
+
+1. Deploying the Application
+- In solution explorer
+• Right click > Publish
+• Select Custom
+• Give profile name
+• Connection > File system
+• Give Target Location
+• Settings > Configuration > Release
+• Click Publish
+
+- Publish profile : settings set for servers
+
+- Publish targets
+• Microsoft Azure websites
+• Import : Using existing publish profile
+• Custom : Creating publish profile
+
+- Connection : Publish method
+• Web Deploy - Depending upon IIS with admin
+• FTP, File system
+
+
+2. Deploying the Database
+- Creating deployment script for database
+• In Package manager console
+• For all migration files : update-database -script
+• For only few last migration files : update-database -script -SourceMigration:<MigrationName>
+
+- Migrations include Schema and Reference Data changes.
+- List of applied migration are listed in __MIgrationHistory table.
+
+3. Build Configurations
+- Creating configuration
+• In Toolbar Dropdown list beside 'Any CPU'
+• Select Configuration manager
+• Active solution configuration > <New>
+• Give Name : Testing
+• Copy settings from Release > OK 
+• In solution explorer
+• Right click Web.config > Add Config Transform
+• Specify settings such as connectionString
+• Create a new publish profile for Testing
+
+4. Application Settings
+- Don't store settings in code
+- Storing in web.config file
+• In appSettings element
+• add key value pair as
+<add key="keyName" value="keyValue" />
+
+- Reading application settings
+• using System.Configuration
+• var keyValue = ConfigurationManager.AppSettings["keyName"]
+• Values are stored as strings
+• Other types need to be converted.
+
+- Overriding Web.config with Web.<Other>.config
+•  Apply transformation on elements as
+• <element ... xdt:Transform="SetAttributes" 
+     xdt:Locator="Match(<key>)" />
+• It find elements with <key> attribute, then sets all other attributes based on this file values.
+
+- Preview transformation output
+• In solution explorer
+• Right click Web.<Other>.config > Preview Transform
+
+
+5. Securing Configuration Settings
+- Security Risks
+• Storing secret as plain text
+
+- Exclude secret from source control
+• In solution explorer
+• Right click > Add > New Item
+• Web > Web Configuration File
+• Name as AppSettings.config
+• IIS by default doesn't serve config files
+• Move appSettings to this file
+• In Web.config add appSettings with attribute
+• configSource="AppSetting.config"
+• AppSetting.config file should be excluded from source control
+• Can do same for connectionStrings
+
+- Encrypting secrets for Web server
+• Open Visual Studio Tools
+• Open Developer Cmd as Admin
+• Encrypting as
+• aspnet_regiis -pef "appSettings" "folder path of config file" -prov "<Provider Name>"
+
+- Encryption Providers
+• DataProtectionConfigurationProvider : Only one machine can encrypt and decrypt
+• RSA Provider : Digital certification is required.
+
+- Decrypting as
+• aspnet_regiis -pdf "appSettings" "folder path of config file"
+
+- Build automation is also required.
+
+
+6. Custom Error Pages
+- By default exception details are shown
+• It irritates users
+• Gives scope for hackers
+
+- Adding custom error page
+• In Web.config under system.web add
+• <customErrors mode="On"></customErrors>
+• mode: RemoteOnly - custom error only for remote users.
+
+- In FilterConfig, HandleErrorAttribute serves custom error page.
+• Only works for exception
+
+- For not found 404
+• For ASP.NET
+• In customErrors add child
+• <error statusCode="404" redirect="~/404.html" />
+• In project root create 404.html file as
+<h1>Not Found</h1>
+
+• For IIS
+• In system.webServer in Web.config add
+• <httpErrors errorMode="Custom">
+    <remove statusCode="404" />
+    <error statusCode="404" path="404.html" responseMode="File" />
+</httpErrors>
+
+
+7. Logging Unhandled Exceptions
+- Install Elmah
+• install-package Elmah
+• Error Logging Modules and Handlers
+
+- Working
+• It plugs into request processing pipeline
+• If there is unhandled exception, it wraps its details and store it
+• Default storage - Memory, can be stored in database.
+
+- Viewing exception
+• domain/elmah.axd
+• Only accessible locally
+
+- Making available remotely
+• In Web.config
+• Enable it as setting
+<elmah>
+<security allowRemoteAccess="true" />
+</elmah>
+• In location elment containing elmah.axd
+• Copy commented <authorization> element
+• Add it after httpHandlers
+• In allow tag change roles to users="admin@vidly.com, ..."
+
+8. Final Touch
+- Tweaking styles of UI
+• Use developer tools, Elements tab
+• Change styles of elements such as 
+• Background color, color, padding, font-size etc.
+• Save all changes in new css bootstrap-theme.css
+- Color pallette generators can be used
+----------------------------------------------
+Status - Section 11 - Final Touch - completed
+
