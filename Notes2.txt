@@ -52,6 +52,10 @@ Add select form group
 new SelectList(list of items, value property, display property),
 "Select membership type",
 new {@class = "form-control"})
+@Html.DropDownListFor(m => m.Customer.MembershipTypeId, 
+new SelectList(Model.MembershipTypes, "Id", "Name"),
+"Select membership type",
+new {@class = "form-control"})
 
 -  In Customer model
 Using Data annotation set display value of MembershipTypeId to Membership Type.
@@ -69,6 +73,9 @@ public ActionResult Create(NewCustomerViewModel viewModel)
     return View();
 }
 Model binding - ASP.NET automatically binds request data to the model parameter
+
+- Create(Customer customer) will also work,
+as keys in form data are prefixed with Customer
 
 
 5. Saving Data
