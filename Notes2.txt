@@ -8,8 +8,8 @@ title and <h2> to New Customer
 Render form :
 .BeginForm returns Disposable object, so
 using block makes </form> render on Dispose() call.
-.LabelFor(<lambda expression>) - specifying model's property used.
-.TextBoxFor - automatic supports validation from model, 2nd argument can be object to specify extra html properties.
+.LabelFor(modelObj => modelObj.FieldName) - specifying model's property used.
+.TextBoxFor, .CheckBoxFor - automatic supports validation from model, 2nd argument can be object to specify extra html properties.
 @using (Html.BeginForm("targetAction", "ControllerName"))
 {
     <div class="form-group">
