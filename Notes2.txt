@@ -164,6 +164,10 @@ Section 5 : Implementing Validation
 - 3 steps
 1) Add data annotation on entities.
 2) Change program flow using ModelState.IsValid in action methods. Return same view if not valid, if valid then redirect.
+if (!ModelState.IsValid){
+var viewModel = new CustomerFormViewModel { Customer = customer,
+    MembershipTypes = _context.MembershipTypes.ToList() };
+return View("CustomeFform", viewModel); }
 3) Add validation messages in Forms.
 • Add placeholder for validation messages next to each field.
 • @Html.ValidationMessageFor(m => m.Customer.Name)
@@ -183,9 +187,8 @@ Section 5 : Implementing Validation
 • EmailAddress
 • Url
 • RegularExpressions("...")
-
 - Custom validation Message
-[<DataAnnotation>(ErrorMessage = "message")]
+[Required(ErrorMessage = "message")]
 
 4. Custom Validation
 - Create a class in Model folder - e.g. Min18YearsIfAMember
