@@ -195,14 +195,20 @@ return View("CustomeFform", viewModel); }
 inherits from ValidationAttribute
 using System.ComponentModel.DataAnnotations
 
-- Override IsValid(object, ValidationContext) method
-Use validationContext to access containing class.
-var customer = (Customer)validationContext.ObjectInstance;
+- Override IsValid(object val, ValidationContext valCtx) method
+Use valCtx to access containing class.
+var customer = (Customer)valCtx.ObjectInstance;
 Add Logic of validation.
+If (cust.memType == 0 || cust.memType == Pay as you go)
 Return ValidationResult.Success for success.
-Return new ValidationResult("Error message") on failure.
+If (cust.birthdate is null) return new ValidationResult("Birthdate is required.")
+Calculate age : age = DateTime.Today.Year - cust.Birthdate.Value.Year
+If (age >= 18) return ValidationResult.Sucess
+Else Return new ValidationResult("Error message") on failure.
 
 - Apply it to property of Model
+[Min18YearsIfAMember]
+public DateTime? Birthdate {get; set;}
 
 5. Refactoring Magic Numbers
 Magic numbers hurt maintainability of code.
@@ -223,6 +229,7 @@ At form beginning add
 - Fixing Id field validation error
 In New action of CustomersController
 In viewModel add "Customer = new Customer(),"
+Fields are initialized to default values.
 
 - Displaying single error text
 Modfiy as : @Html.ValidationSummary(true, "error message")
@@ -235,6 +242,10 @@ First arg is : exclude individual property errors
 • Immediate feedback
 • No waste of server resources
 
+- In Layout.cshtml
+@RenderSection("scripts", false)
+Renders scripts defined in child views here.
+
 - Enabling client-side validation
 In CustomerForm.cshtml add script section as :
 @section scripts
@@ -245,7 +256,7 @@ In CustomerForm.cshtml add script section as :
 - How it works
 • @Html helper methods adds addtional attributes.
 • Jquery checks inputs based on those attributes.
-• It only works with standard data annotatoin of .NET.
+• It only works with standard data annotation of .NET. Not with custom defined (Min18YearsIfAMember).
 • Custom Validation attribute (classes) requires writing jquery, and change of validation rules requires re-editing jquery.
 
 8. Anti-forgery Tokens
