@@ -273,15 +273,31 @@ In CustomerForm.cshtml add script section as :
 9. Code review  - Preventing showing of default values in from
 - In New action remove "new Movie()" from viewModel
 
+
 - Create Pure View Model
 • Extract properties of Movie in MovieFormViewModel.
 • And make them nullable.
 • Also import System.ComponentModel.DataAnnotations.
 • Add [Required] attribute as required.
 • Change references in MovieForm.cshtml
-• Build constructor to accept Movie object.
+• Build constructor to accept Movie object and initialize properties
+public MovieFormViewModel(Movie movie){
+ Set Id, Name, ReleaseDate, NumberInStock and GenreId
+}
+* Default constructor as
+public MovieFormViewMode() { Id = 0 }
+Id is zero for hidden field in form.
+* In Edit and Save action use MovieFormViewModel(movie) and remove movie inside it.
 • Initialize properties in it.
 • Also create default constructor, with initializing "Id = 0".
+
+- Render title from MovieFormViewModel
+* Create prop as
+public string Title {
+   get { 
+       return (Id != 0) ? "Edit Movie" : "New Movie";
+   }
+}
 
 - In Edit and Save action in MoviesController 
 • Edit as "new MovieFormViewModel(movie)"
