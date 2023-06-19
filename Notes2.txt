@@ -475,6 +475,7 @@ customerDto.Id = customer.Id;
 2) Not found - NotFound()
 3) Get one customer - Ok(old return object);
 4) Post - Created(new Uri(Request.RequestUri + "/" + customer.Id), customerDto);
+Return Ok in update and delete methods.
 
 - Descriptions
 • Uri is defined in System namespace
