@@ -326,8 +326,11 @@ Section 9 : Performance Optimization
 2. Data Tier
 - Causes : Schema, Queries
 
-- Schema Issues : Primiary keys, Relationships, Indexes
-- Schema related : Entity-Attribute-Value (EAV)
+- Schema Issues : 
+Primiary keys - Every table should have primary key
+Relationships - Relationships should be mapped in same table 
+Indexes - On columns used for filtering records.
+- Schema related : Avoid Entity-Attribute-Value (EAV)
 - Probles of EAV Pattern
 • No ORMs
 • Long queries
@@ -360,15 +363,19 @@ Section 9 : Performance Optimization
 • Queries execution time
 
 - Job Interview question : N + 1 issue
+Due to lazy loading
+1 main query and N lazy loading call queries.
 
 4. Application Tier - Output Cache
 - Enable caching using attribute [OutputCache]
 • On actions, Controllers
+• Html page is cached, query to DB is not executed.
 
 - Parameters of OutputCache
 • Duration : time in seconds
 • Location : OutputCacheLocation.server or client
-• VaryByParam : Different cache for different action params
+View specific to client or not.
+• VaryByParam : "genre" / "*" - Different cache for different action params
 
 - Disabling caching of browsers
 • Use [OutputCache(Duration=0, VaryByParam="*", NoStore=true)]
@@ -377,16 +384,20 @@ Section 9 : Performance Optimization
 5. Data Caching
 - Only after Performance Profiling
 - Cons : Increase memory consumption, Makes complex
-- Use it for only actions of displaying data
+- Use it for only actions of displaying data (not modifying).
 - Using as :
 • Import System.Runtime.Caching
 • Store and retrieve from MemoryCache.Default["<keyName>"]
 • Casting on retrieving : ... as IEnumerable<Genre>;
+if (MemoryCache.Default["Genres"] = null)
+    MemoryCache.Default["Genres"] = ..fromDb
+genres = MemoryCache.Default["Genres"] as IEnumerable<Genre>;
 
 6. Async
 - Improves scalability, when not using single instance SQL server.
 
 7. Release Builds : Produces application without debugging code.
+- Below Team/Tools Menu in VisualStudio.
 
 8. Disabling Session
 - What : web server memory allocated to each user.
@@ -403,6 +414,9 @@ Section 9 : Performance Optimization
 - Reduce requests count and response size 
 - Keep DTOs, js, css, images ligthweight
 - ASP.NET automatically makes bundles in release build using Web.Release.config
+- Bundling and different type of compilation happens at runtime of app, which is different
+from compiling C# code using ctrl+shift+b/ctrl+F5
+- Web.Release.Config overrides Web.config for release build.
 ----------------------------------------------
 Status - Section 9 - Client Tier - completed
 
