@@ -412,7 +412,10 @@ genres = MemoryCache.Default["Genres"] as IEnumerable<Genre>;
 
 9. Client Tier
 - Reduce requests count and response size 
-- Keep DTOs, js, css, images ligthweight
+- Keep DTOs, js, css, images (compress, sprites) ligthweight
+- Render HTML on client using SPAs (React.js etc).
+- Reduce data stored in cookies, as they're sent back and forth with every request.
+- Use CDN.
 - ASP.NET automatically makes bundles in release build using Web.Release.config
 - Bundling and different type of compilation happens at runtime of app, which is different
 from compiling C# code using ctrl+shift+b/ctrl+F5
