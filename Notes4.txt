@@ -197,20 +197,23 @@ $("#newRental").submit(function (e) {
 
 - Reset form validation state
 - Assign validate method result to validator
+var validator = $("#newRental").validate({..})
 - In done method : validator.resetForm();
 
 - Code refactoring is required in OOP design.
 
 
-16. Summary
+16. Summary : Systematic Approach
 - Understand the problem
 - Start with the backend
 - Think of the inputs and the output
 - Declare a simple API
 - Extend the domain model (if required)
 - Build the happy path
-- Add the details one by one
+- Add the details one by one (cover edge cases)
 - Move on to the front end
+* Create a simplest UI that works
+* Gradually add details one at a time
 
 -----------------------------------------------------------
 
