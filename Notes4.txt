@@ -41,8 +41,8 @@ var movies = ....Where(m => newRental.MovieIds.Contains(m.Id))
 - Cases : 
 • CustomerId is invalid
 • No MovieIds
-• One of more MovieIds are invalid
-• One of more movies are not available
+• One or more MovieIds are invalid
+• One or more movies are not available
 
 7. Building the Front-end - Using AJAX
 - Add mvc5 controller - RentalsController
@@ -127,8 +127,11 @@ $("#movies").append("<li>" + movie.name + "</li>");
 11. Filter the Records
 - In Api/CustomersController
 • add optional parameter to GetCustomers(string query = null)
-• Check for query for null
-• Apply filter using Where(c => c.Name.Contains(query))
+• Check for query for null & apply filter
+if(!String.IsNullOrWhiteSpace(query))
+customersQuery = customersQuery.Where(c => c.Name.Contains(query));
+• Convert data
+var customerDto = customersQuery.ToList().Select(Map<Customer, CustomerDto>);
 
 - In Api/MoviesController
 • Filter for name and availability.
@@ -148,7 +151,7 @@ $("#newRental").submit(function (e) {
 }
 
 13. Displaying Toast Notifications
-- Install toastr
+- Install-package toastr
 - Add it to bundle config : /content/toastr.css and /scripts/toastr.js
 - In post success : toastr.success("<msg>")
 - In post fail : toastr.error("<msg>")
@@ -164,6 +167,7 @@ $("#newRental").submit(function (e) {
     submitHandler : function() { code from submit function }
 });
 • Remove submit handler of form
+• Add required to customer input.
 
 - Making text and input red
 • In site.css add
