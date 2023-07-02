@@ -221,7 +221,7 @@ Section 11 : Deployment
 
 1. Deploying the Application
 - In solution explorer
-• Right click > Publish
+• Right click project > Publish
 • Select Custom
 • Give profile name
 • Connection > File system
@@ -246,6 +246,7 @@ Section 11 : Deployment
 • In Package manager console
 • For all migration files : update-database -script
 • For only few last migration files : update-database -script -SourceMigration:<MigrationName>
+It gives sql code from sourceMigration to latest migration.
 
 - Migrations include Schema and Reference Data changes.
 - List of applied migration are listed in __MIgrationHistory table.
@@ -259,8 +260,12 @@ Section 11 : Deployment
 • Copy settings from Release > OK 
 • In solution explorer
 • Right click Web.config > Add Config Transform
+• Web.Testing.config is created.
 • Specify settings such as connectionString
+> Change name from MyDB to DefaultConnection
+> Change connectionString
 • Create a new publish profile for Testing
+• Profiles are listed in Vidly/Properties/PublishProfiles
 
 4. Application Settings
 - Don't store settings in code
@@ -277,8 +282,11 @@ Section 11 : Deployment
 
 - Overriding Web.config with Web.<Other>.config
 •  Apply transformation on elements as
-• <element ... xdt:Transform="SetAttributes" 
-     xdt:Locator="Match(<key>)" />
+• In <appSettings></..>
+<add key="" value="" ... xdt:Transform="SetAttributes" 
+   xdt:Locator="Match(key)" />
+• Locator="Match(x)" : x is the tag attribute need changing to apply transformation
+• Apply in appSettings tag for MailServer
 • It find elements with <key> attribute, then sets all other attributes based on this file values.
 
 - Preview transformation output
