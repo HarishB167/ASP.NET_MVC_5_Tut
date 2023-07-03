@@ -245,6 +245,7 @@ Section 11 : Deployment
 - Creating deployment script for database
 • In Package manager console
 • For all migration files : update-database -script
+Or Update-Database -Script -SourceMigration:0
 • For only few last migration files : update-database -script -SourceMigration:<MigrationName>
 It gives sql code from sourceMigration to latest migration.
 
