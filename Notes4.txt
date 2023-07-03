@@ -378,14 +378,17 @@ In body : <h1>Not Found</h1>
 
 - Making available remotely
 • In Web.config
+• In <location? elment containing elmah.axd
+Copy commented <authorization> element
+Add it after httpHandlers
+• Allowing users : change allow in authorization as
+<allow users="admin@vidly.com, user1@vidly.com" />
 • Enable it as setting
 <elmah>
 <security allowRemoteAccess="true" />
 </elmah>
-• In location elment containing elmah.axd
-• Copy commented <authorization> element
-• Add it after httpHandlers
-• In allow tag change roles to users="admin@vidly.com, ..."
+
+- Storing error in DB : future TODO
 
 8. Final Touch
 - Tweaking styles of UI
