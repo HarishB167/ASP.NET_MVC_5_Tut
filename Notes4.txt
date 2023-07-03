@@ -252,6 +252,17 @@ It gives sql code from sourceMigration to latest migration.
 - Migrations include Schema and Reference Data changes.
 - List of applied migration are listed in __MIgrationHistory table.
 
+- In Somee.com
+* Copy connectionString from dashboard
+* Example :
+workstation id=..;packet size=4096;user id=user_SQLLogin_1;pwd=..;
+data source=userDb.mssql.somee.com;persist security info=False;initial catalog=userDb
+* Paste it in web.config connectionString
+* Migrations applying
+> Create sql script in visual studio and copy it.
+> In somee > Run scripts tab > OPEN T-SQL CONSOLE
+> Paste and run script
+
 3. Build Configurations
 - Creating configuration
 • In Toolbar Dropdown list beside 'Any CPU'
