@@ -300,15 +300,16 @@ It gives sql code from sourceMigration to latest migration.
 
 - Exclude secret from source control
 • In solution explorer
-• Right click > Add > New Item
+• Right click project > Add > New Item
 • Web > Web Configuration File
 • Name as AppSettings.config
 • IIS by default doesn't serve config files
 • Move appSettings to this file
 • In Web.config add appSettings with attribute
-• configSource="AppSetting.config"
+configSource="AppSetting.config"
+<appSettings configSource="AppSetting.config"></appSettings>
 • AppSetting.config file should be excluded from source control
-• Can do same for connectionStrings
+• Can do same for connectionStrings, use configSource
 
 - Encrypting secrets for Web server
 • Open Visual Studio Tools
@@ -332,26 +333,33 @@ It gives sql code from sourceMigration to latest migration.
 • Gives scope for hackers
 
 - Adding custom error page
+• Only works for exception
 • In Web.config under system.web add
 • <customErrors mode="On"></customErrors>
 • mode: RemoteOnly - custom error only for remote users.
+• Error page is stored in Views/Shared/
+• In FilterConfig, HandleErrorAttribute serves custom error page.
 
-- In FilterConfig, HandleErrorAttribute serves custom error page.
-• Only works for exception
+- Default NotFound error pages
+• Served by asp.net - when invalid action 
+• Served by IIS - when action returns not found /
+when not existing static resource accessed e.g. domain/image.png
 
-- For not found 404
+- Custom not found 404 from ASP.NET
 • For ASP.NET
-• In customErrors add child
+• In <customErrors> add child
 • <error statusCode="404" redirect="~/404.html" />
 • In project root create 404.html file as
-<h1>Not Found</h1>
+In body : <h1>Not Found</h1>
 
-• For IIS
-• In system.webServer in Web.config add
+- Custom not found 404 from IIS
+• In <system.webServer> in Web.config add
 • <httpErrors errorMode="Custom">
-    <remove statusCode="404" />
+    <remove statusCode="404" /> // removing standard error page
     <error statusCode="404" path="404.html" responseMode="File" />
 </httpErrors>
+• For all : errorMode=Custom
+• For remote only : errorMode=DetailedLocalOnly
 
 
 7. Logging Unhandled Exceptions
