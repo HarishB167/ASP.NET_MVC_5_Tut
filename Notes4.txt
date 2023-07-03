@@ -223,7 +223,7 @@ Section 11 : Deployment
 - In solution explorer
 • Right click project > Publish
 • Select Custom
-• Give profile name
+• Give profile name : e.g. "Someee.com"
 • Connection > File system
 • Give Target Location
 • Settings > Configuration > Release
