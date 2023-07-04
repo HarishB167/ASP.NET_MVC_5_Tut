@@ -276,7 +276,7 @@ data source=userDb.mssql.somee.com;persist security info=False;initial catalog=u
 • Specify settings such as connectionString
 > Change name from MyDB to DefaultConnection
 > Change connectionString
-• Create a new publish profile for Testing
+• Publish with creating a new publish profile for Testing
 • Profiles are listed in Vidly/Properties/PublishProfiles
 
 4. Application Settings
