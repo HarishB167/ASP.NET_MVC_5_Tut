@@ -257,6 +257,7 @@ It gives sql code from sourceMigration to latest migration.
 * Example :
 workstation id=..;packet size=4096;user id=user_SQLLogin_1;pwd=..;
 data source=userDb.mssql.somee.com;persist security info=False;initial catalog=userDb
+* Rename -> pwd to Password.
 * Paste it in web.config connectionString
 * Migrations applying
 > Create sql script in visual studio and copy it.
