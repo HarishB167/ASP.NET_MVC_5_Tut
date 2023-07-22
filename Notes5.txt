@@ -1,0 +1,17 @@
+Extra notes
+
+- Enabling CORS in ASP.NET MVC 5
+* Ref : https://learn.microsoft.com/en-us/aspnet/web-api/overview/security/enabling-cross-origin-requests-in-web-api
+* Install-Package Microsoft.AspNet.WebApi.Cors
+* In App_Start/WebApiConfig.cs add in Register method
+config.EnableCors();
+* Ways
+using System.Web.Http.Cors;
+> Action/Controller :
+Decorate with - [EnableCors(origins: "http://domain.com", headers: "*", methods: "*")]
+> Globally :
+In WebApiConfig.cs in Register method
+var cors = new EnableCorsAttribute("www.example.com", "*", "*");
+config.EnableCors(cors);
+* For allow all origins use (origins: "*",...), 
+for globally - EnableCorsAtteribute("*","*","*");
